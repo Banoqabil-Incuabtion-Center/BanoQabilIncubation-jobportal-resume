@@ -98,6 +98,15 @@ export default function savedJobs({ jobs, canRegister = true }: SavedProps) {
 
                             ))}
 
+                            <NavigationMenuItem>
+                                <NavigationMenuLink>
+                                    <a href="/resume" className={`px-3 py-1 rounded ${window.location.pathname === "/resume"
+                                        ? "bg-[#309689] text-white"
+                                        : "hover:bg-gray-200"
+                                        }`}>Resume</a>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+
                         </NavigationMenuList>
 
                     </NavigationMenu>
