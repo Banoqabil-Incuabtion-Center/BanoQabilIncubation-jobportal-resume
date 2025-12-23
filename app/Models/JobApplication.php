@@ -7,7 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class JobApplication extends Model
 {
     //
-    protected $guarded = [];
+    protected $table = 'job_applications';
+
+    protected $fillable = [
+        'job_id',
+        'user_id',
+        'full_name',
+        'email',
+        'phone_no',
+        'resume',
+        'cover_letter',
+    ];
+
+    public $timestamps = true;
 
     public function user(){
         return $this->belongsTo(User::class);
