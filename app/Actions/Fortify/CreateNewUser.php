@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Models\Company;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -42,12 +43,15 @@ class CreateNewUser implements CreatesNewUsers
             $companyId = $company->id; // use the ID of the newly created or existing company
         }
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
             'role' => $role,
             'company_id' => $companyId,
         ]);
+        Auth::login($user);
+        // log in user
+        return $user;
     }
 }
