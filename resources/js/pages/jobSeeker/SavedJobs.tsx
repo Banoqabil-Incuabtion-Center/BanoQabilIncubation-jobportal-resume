@@ -6,7 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { login, logout, register } from "@/routes"
 import { SharedData } from "@/types"
 import { Link, router, usePage } from "@inertiajs/react"
-import { Bell, Bookmark, BriefcaseBusiness, CircleUser, LogOut } from "lucide-react"
+import { Bell, Bookmark, BriefcaseBusiness, LogOut } from "lucide-react"
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
 import { useEffect, useState } from "react"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"

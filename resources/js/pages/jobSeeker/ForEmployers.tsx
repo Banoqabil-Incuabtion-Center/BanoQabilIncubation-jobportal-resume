@@ -1,37 +1,11 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { logout } from "@/routes";
-import { SharedData } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
-import { BriefcaseBusiness, LogOut } from "lucide-react";
-
-interface Job {
-    id: number;
-    company: Company;
-    title: string;
-    salary: number;
-}
-
-interface Company {
-    id: number;
-    name: string;
-}
-
-interface EmployersProps {
-    jobs: {
-        data: Job[];
-        links: { url: string | null; label: string; active: boolean }[];
-    };
-    canRegister?: boolean;
-}
+import { BriefcaseBusiness} from "lucide-react";
 
 
-
-
-export default function ForEmployers({ jobs }: EmployersProps) {
+export default function ForEmployers() {
 
     const isMobile = useIsMobile()
     const { url } = usePage()
@@ -39,9 +13,6 @@ export default function ForEmployers({ jobs }: EmployersProps) {
 
     const links = [
         { href: "/", label: "Find Jobs" },
-        // { href: "/jobSeeker/aboutUs", label: "About Us" },
-        // { href: "/jobSeeker/appliedJobs", label: "Applied Jobs" },
-        // { href: "/jobSeeker/contactUs", label: "Contact Us" },
         { href: "/jobSeeker/forEmployers", label: "For Employers" },
     ]
     return (
