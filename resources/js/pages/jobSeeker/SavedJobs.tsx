@@ -34,7 +34,7 @@ interface SavedProps {
     canRegister?: boolean;
 }
 
-export default function savedJobs({ jobs, canRegister = true }: SavedProps) {
+export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
     const isMobile = useIsMobile()
     const { url } = usePage()
 
@@ -60,7 +60,7 @@ export default function savedJobs({ jobs, canRegister = true }: SavedProps) {
                 .then(res => res.json())
                 .then((data: number[]) => setSavedJobs(data));
         }
-    }, []);
+    }, [auth]);
 
     const handlePagination = (url?: string | null) => {
         if (!url) return
@@ -253,7 +253,7 @@ export default function savedJobs({ jobs, canRegister = true }: SavedProps) {
                                         setTimeout(() => setAnimateId(null), 300);
 
                                         router.post(`/jobSeeker/save-job/${job.id}`, {}, {
-                                            onSuccess: (page) => {
+                                            onSuccess: () => {
                                                 // toggle in UI
                                                 setSavedJobs(prev =>
                                                     prev.includes(job.id)
