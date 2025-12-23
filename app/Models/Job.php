@@ -17,20 +17,39 @@ class Job extends Model
     //Add below property to avoid mass assignment error(laravel's security)
     // protected $fillable = ['employer_id', 'title', 'salary'];
 
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'salary',
+        'company_id',
+        'user_id',
+    ];
 
-    public function recruiter(): BelongsTo{
+    public function recruiter(): BelongsTo
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function applications(){
-        return $this->hasMany(JobApplication::class);
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class, 'job_id');
     }
 
-    public function company(){
+    public function applicants(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'job_applications', // pivot table
+            'job_id',
+            'user_id'
+        )->withTimestamps();
+    }
+
+    public function company()
+    {
         return $this->belongsTo(Company::class);
     }
 
-    public function savedByUsers(): BelongsToMany{
+    public function savedByUsers(): BelongsToMany
+    {
         return $this->belongsToMany(User::class, 'saved_jobs', 'job_id', 'user_id');
     }
 }
