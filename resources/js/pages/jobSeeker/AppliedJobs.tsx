@@ -5,10 +5,10 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useIsMobile } from "@/hooks/use-mobile"
 import { login, logout, register } from "@/routes"
 import { SharedData } from "@/types"
-import { Link, router, usePage } from "@inertiajs/react"
-import { Bell, Bookmark, BriefcaseBusiness, CircleUser, LogOut } from "lucide-react"
+import { Link, usePage } from "@inertiajs/react"
+import { Bell, Bookmark, BriefcaseBusiness, LogOut } from "lucide-react"
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Inertia } from "@inertiajs/inertia"
@@ -54,17 +54,17 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
 
     const [hasUnread, setHasUnread] = useState(true);
 
-    const [appliedJobs, setAppliedJobs] = useState<JobApplication[]>([])
-    const [loading, setLoading] = useState(true);
+    // const [appliedJobs, setAppliedJobs] = useState<JobApplication[]>([])
+    // const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetch('api/user/applied-jobs')
-            .then((res) => res.json())
-            .then((data) => {
-                setAppliedJobs(data);
-                setLoading(false);
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetch('api/user/applied-jobs')
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setAppliedJobs(data);
+    //             setLoading(false);
+    //         });
+    // }, []);
 
     const handlePagination = (url?: string | null) => {
         if (!url) return
@@ -267,7 +267,7 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
                         }
 
                         return (
-                            <PaginationItem key={index}>
+                            <PaginationItem key={link.label}>
                                 <PaginationLink
                                     isActive={link.active}
                                     onClick={() => handlePagination(link.url)}
