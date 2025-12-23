@@ -37,7 +37,7 @@ class ApplicationController extends Controller
             ->where('user_id', Auth::id()) // use Auth::id() for currently logged-in user
             ->exists();
 
-            Auth::user()->appliedJobs()->attach($job->id);
+        // Auth::user()->appliedJobs()->attach($job->id);
 
         if ($alreadyApplied) {
             return back()->withErrors(['error' => 'You have already applied for this job.']);
@@ -56,65 +56,53 @@ class ApplicationController extends Controller
             'resume' => $path,
             'cover_letter' => $request->cover_letter,
         ]);
+
+        return redirect()->route('s.appliedJobs')
+            ->with('success', 'Job applied successfully');
     }
 
-    public function appliedJob(){
-        $applications = Auth::user()->appliedJobs()->with('company')->latest()->paginate(5);
-
+    public function appliedJob()
+    {
+        $applications = Auth::user();
         // dd($applications);
 
-        $jobs = $applications->through(function($job) {
-        return [
-            'id' => $job->id,
-            'title' => $job->title,
-            'salary' => $job->salary,
-            'company' => [
-                'id' => $job->company->id,
-                'name' => $job->company->name,
-            ],
-        ];
-    });
-
-        // dd($jobs);
+        $jobs = $applications
+            ->appliedJobs()
+            ->with('company')
+            ->paginate(5);
 
         return Inertia::render('jobSeeker/AppliedJobs', [
             'jobs' =>  $jobs,
         ]);
     }
 
-    public function getAppliedJobIds(Job $job){
-        $user = Auth::user();
-        // $user->appliedJobs()->attach($job->id);
-        $appliedJobIds = $user->appliedJobs()->pluck('job_id');
-        return response()->json($appliedJobIds);
-    }
-
-    public function jobsApplied(){
+    public function jobsApplied()
+    {
         $recruiter = Auth::user();
 
-        $applications = JobApplication::whereHas('job', function($query) use ($recruiter){
+        $applications = JobApplication::whereHas('job', function ($query) use ($recruiter) {
             $query->where('user_id', $recruiter->id);
         })
-        ->with(['job', 'seeker'])
-        ->latest()
-        ->paginate(6);
+            ->with(['job', 'seeker'])
+            ->latest()
+            ->paginate(6);
 
         // dd($applications);
 
-        $applicationsData = $applications->through(function($job){
+        $applicationsData = $applications->through(function ($job) {
             return [
-                'id' =>$job->id,
+                'id' => $job->id,
                 'job' => [
-                    'id' =>$job->job->id,
-                    'title' =>$job->job->title,
+                    'id' => $job->job->id,
+                    'title' => $job->job->title,
                 ],
                 'seeker' => [
-                    'id' =>$job->seeker->id,
-                    'name' =>$job->seeker->name,
+                    'id' => $job->seeker->id,
+                    'name' => $job->seeker->name,
                     'email' => $job->seeker->email,
                 ],
                 'resume' => $job->resume,
-                'cover_letter' =>$job->cover_letter,
+                'cover_letter' => $job->cover_letter,
                 'applied_at' => $job->created_at->toDateTimeString(),
             ];
         });
