@@ -40,6 +40,7 @@ interface IndexProps {
 export default function Index({ jobs, canRegister = true }: IndexProps) {
     const isMobile = useIsMobile()
     const { url } = usePage()
+    const currentPath = url.split('?')[0];
     const { auth } = usePage<SharedData>().props;
 
     // console.log("jobs:", jobs);
@@ -100,7 +101,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                     <NavigationMenuLink asChild>
                                         <Link
                                             href={link.href}
-                                            className={`px-3 py-1 rounded ${url === link.href
+                                            className={`px-3 py-1 rounded ${currentPath === link.href
                                                 ? "bg-[#309689] text-white" // active link style
                                                 : "hover:bg-gray-200"
                                                 }`}

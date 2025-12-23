@@ -37,6 +37,7 @@ interface SavedProps {
 export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
     const isMobile = useIsMobile()
     const { url } = usePage()
+    const currentPath = url.split('?')[0];
 
     const links = [
         { href: "/", label: "Home" },
@@ -120,7 +121,7 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                             <Link
                                 href="/jobSeeker/savedJobs"
                                 className="p-2 rounded transition">
-                                {url === "/jobSeeker/savedJobs" ? (
+                                {currentPath === "/jobSeeker/savedJobs" ? (
                                     <Bookmark className="h-6 w-6 text-[#309689]" fill="currentColor" />
                                 ) : (
                                     <Bookmark className="h-6 w-6 text-gray-600" />

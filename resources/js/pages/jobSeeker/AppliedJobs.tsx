@@ -37,6 +37,7 @@ interface AppliedProps {
 export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) {
     const isMobile = useIsMobile()
     const { url } = usePage()
+    const currentPath = url.split('?')[0];
     const { auth } = usePage<SharedData>().props;
 
     const links = [
@@ -90,7 +91,7 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
                                     <NavigationMenuLink asChild>
                                         <Link
                                             href={link.href}
-                                            className={`px-3 py-1 rounded ${url === link.href
+                                            className={`px-3 py-1 rounded ${currentPath === link.href
                                                 ? "bg-[#309689] text-white" // active link style
                                                 : "hover:bg-gray-200"
                                                 }`}
