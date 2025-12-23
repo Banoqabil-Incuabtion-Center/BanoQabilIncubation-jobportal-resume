@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { useState } from 'react';
 
 type RegisterProps = {
@@ -138,7 +137,7 @@ export default function Register({ type }: RegisterProps) {
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full bg-[#309689]"
+                                className="mt-2 w-full bg-[#309689] hover:bg-gray-300 hover:text-black"
                                 tabIndex={5}
                                 data-test="register-user-button"
                             >
