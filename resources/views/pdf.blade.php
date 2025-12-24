@@ -24,7 +24,9 @@
     }
 
     .resume-section {
-        page-break-inside: auto !important; /* DomPDF */  
+        page-break-inside: avoid !important;
+        break-inside: avoid;
+        display: block;
     }
 
     .resume-section h2 {
@@ -33,8 +35,7 @@
     }
     
     ul li {
-        page-break-inside: avoid !important; /* DomPDF */
-        break-inside: avoid;
+    page-break-inside: auto !important;
     }
 
 </style>
