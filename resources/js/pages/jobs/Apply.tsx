@@ -103,7 +103,9 @@ export default function Apply({ jobs, onSuccess }: ApplyProps) {
                                                 placeholder="Enter full name"
                                                 value={data.full_name}
                                                 onChange={(e) => setData('full_name', e.target.value)} />
+                                                {errors.full_name && <p className="text-red-500 text-sm">{errors.full_name}</p>}
                                         </Field>
+                                        
 
 
 
@@ -117,7 +119,9 @@ export default function Apply({ jobs, onSuccess }: ApplyProps) {
                                                 placeholder="Enter your Email"
                                                 value={data.email}
                                                 onChange={(e) => setData('email', e.target.value)} />
+                                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                                         </Field>
+                                        
 
 
 
@@ -131,9 +135,9 @@ export default function Apply({ jobs, onSuccess }: ApplyProps) {
                                                 placeholder="Enter Your Phone number"
                                                 value={data.phone_no}
                                                 onChange={(e) => setData('phone_no', e.target.value)} />
+                                                {errors.phone_no && <p className="text-red-500 text-sm">{errors.phone_no}</p>}
                                         </Field>
-
-
+                                        
 
                                         <Field>
                                             <FieldLabel className="font-medium text-gray-700">Upload resume(pdf, docx, doc)</FieldLabel>
@@ -143,7 +147,9 @@ export default function Apply({ jobs, onSuccess }: ApplyProps) {
                                                 id="resume"
                                                 name="resume"
                                                 onChange={(e) => setData('resume', e.target.files?.[0] ?? null)} />
+                                                {errors.resume && <p className="text-red-500 text-sm">{errors.resume}</p>}
                                         </Field>
+                                        
                                     </div>
 
 
