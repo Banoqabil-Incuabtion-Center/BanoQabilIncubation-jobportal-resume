@@ -63,11 +63,11 @@ export default function Apply({ jobs, onSuccess }: ApplyProps) {
         });
     };
     return (
-        <div className="max-w-5xl mx-auto p-8 bg-white shadow-md rounded-xl mt-20 mb-16">
+        <div className="max-w-5xl mx-auto p-8 bg-white rounded-xl mt-20 mb-16">
             <h2 className="text-3xl font-bold mb-8 text-gray-900">Job Application</h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                <div className="p-4 rounded-xl">
+                <div className="rounded-xl">
                     {job ? (
                         <div className="bg-gray-50 p-6 shadow-md rounded-xl">
                             <h3 className="text-xl font-semibold mb-4">Applying for:</h3>
