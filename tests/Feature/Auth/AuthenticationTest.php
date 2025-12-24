@@ -9,18 +9,47 @@ test('login screen can be rendered', function () {
 
     $response->assertStatus(200);
 });
-
-test('users can authenticate using the login screen', function () {
-    $user = User::factory()->withoutTwoFactor()->create();
+test('job seeker can authenticate and is redirected home', function () {
+    $user = User::factory()->withoutTwoFactor()->create([
+        'role' => 'jobSeeker',
+        'password' => bcrypt('password'),
+    ]);
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $this->assertAuthenticatedAs($user);
+    $response->assertRedirect('/');
 });
+
+test('recruiter can authenticate and is redirected to dashboard', function () {
+    $recruiter = User::factory()->withoutTwoFactor()->create([
+        'role' => 'recruiter',
+        'password' => bcrypt('password'),
+    ]);
+
+    $response = $this->post(route('login.store'), [
+        'email' => $recruiter->email,
+        'password' => 'password',
+    ]);
+
+    $this->assertAuthenticatedAs($recruiter);
+    $response->assertRedirect('/dashboard');
+});
+
+// test('users can authenticate using the login screen', function () {
+//     $user = User::factory()->withoutTwoFactor()->create();
+
+//     $response = $this->post(route('login.store'), [
+//         'email' => $user->email,
+//         'password' => 'password',
+//     ]);
+
+//     $this->assertAuthenticated();
+//     $response->assertRedirect(route('dashboard', absolute: false));
+// });
 
 test('users with two factor enabled are redirected to two factor challenge', function () {
     if (! Features::canManageTwoFactorAuthentication()) {
