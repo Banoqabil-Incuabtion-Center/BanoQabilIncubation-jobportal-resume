@@ -163,9 +163,9 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                                 href="/jobSeeker/savedJobs"
                                 className="p-2 rounded transition">
                                 {currentPath === "/jobSeeker/savedJobs" ? (
-                                    <Bookmark className="h-6 w-6 text-[#309689]" fill="currentColor" />
+                                    <Bookmark className="h-5 w-5 text-[#309689]" fill="currentColor" />
                                 ) : (
-                                    <Bookmark className="h-6 w-6 text-gray-600" />
+                                    <Bookmark className="h-5 w-5 text-gray-600" />
                                 )}
                             </Link>
 

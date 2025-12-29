@@ -155,9 +155,9 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
                                 href="/jobSeeker/savedJobs"
                                 className="p-2 rounded transition">
                                 {url === "/jobSeeker/savedJobs" ? (
-                                    <Bookmark className="h-6 w-6 text-[#309689]" fill="currentColor" />
+                                    <Bookmark className="h-5 w-5 text-[#309689]" fill="currentColor" />
                                 ) : (
-                                    <Bookmark className="h-6 w-6 text-gray-600" />
+                                    <Bookmark className="h-5 w-5 text-gray-600" />
                                 )}
                             </Link>
 
@@ -176,7 +176,7 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
                                     <button className="p-2 rounded transition"
                                         onClick={() => setHasUnread(false)}>
                                         <Bell
-                                            className={`h-6 w-6 cursor-pointer ${hasUnread ? "text-[#309689]" : "text-gray-600"
+                                            className={`h-5 w-5 cursor-pointer ${hasUnread ? "text-[#309689]" : "text-gray-600"
                                                 }`}
                                         />
                                     </button>
