@@ -85,8 +85,8 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
     };
     return (
         <div>
-            <header className="flex items-center justify-between w-full px-6 py-4">
-                <div className="flex flex-wrap items-center font-bold text-2xl">
+            <header className="flex flex-wrap items-center justify-between w-full px-4 md:px-6 py-4">
+                <div className="flex items-center font-bold text-2xl mb-2 md:mb-0">
                     <BriefcaseBusiness className="mr-2" />
                     <h3 className="text-[#309689]"> Job Portal</h3>
                 </div>
@@ -94,7 +94,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                 <div>
                     <NavigationMenu viewport={isMobile}>
 
-                        <NavigationMenuList className="flex-wrap">
+                        <NavigationMenuList className="flex flex-wrap gap-1">
                             {links.map((link) => (
 
                                 <NavigationMenuItem key={link.href}>
@@ -115,8 +115,8 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                             <NavigationMenuItem>
                                 <NavigationMenuLink>
                                     <a href="/resume" className={`px-3 py-1 rounded ${window.location.pathname === "/resume"
-                                            ? "bg-[#309689] text-white"
-                                            : "hover:bg-gray-200"
+                                        ? "bg-[#309689] text-white"
+                                        : "hover:bg-gray-200"
                                         }`}>Resume</a>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
@@ -128,7 +128,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                 </div>
 
 
-                <div className="flex items-center gap-4 align-baseline">
+                <div className="flex items-center gap-2 md:gap-4 flex-wrap">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
@@ -243,57 +243,52 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                     )}
 
                 </div>
-
-
-
-
             </header >
 
-            <div className="h-full flex justify-center flex-col">
-                <h1 className="flex text-4xl font-bold justify-center items-center mt-20">Find Your Dream Job Here</h1>
-                <p className="flex text-md justify-center items-center mt-5 text-gray-400">Connecting talent with Opportunity:Your Gateway to Success</p>
-                <div className="flex justify-center mt-5">
-                    <div className="relative w-[50%] mb-5">
-                        <Input className="w-full h-15 pr-20 rounded-full px-6"
-                            placeholder="Search here..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleSearch();
-                            }}
-                        />
-                        <Button
-                            onClick={handleSearch}
-                            className="absolute right-0 top-0 h-full bg-[#309689] hover:bg-teal-500 text-white px-6 py-3 rounded-full flex items-center gap-2 transition-colors ml-2"
-                        >
-                            <Search size={18} />
-                            <span className="font-medium">Search Job</span>
-                        </Button>
-                    </div>
-
-
+            <div className="flex flex-col items-center text-center px-4 md:px-0 mt-12">
+                <h2 className="text-3xl sm:text-4xl font-bold">Find Your Dream Job Here</h2>
+                <p className="mt-3 text-gray-400 text-sm sm:text-md">Connecting talent with Opportunity:Your Gateway to Success</p>
+                <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 mt-5 relative">
+                    <Input className="w-full h-12 pr-24 rounded-full px-4 sm:px-6"
+                        placeholder="Search here..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSearch();
+                        }}
+                    />
+                    <Button
+                        onClick={handleSearch}
+                        className="absolute right-0 top-0 h-full bg-[#309689] hover:bg-teal-500 text-white px-4 sm:px-6 rounded-full flex items-center gap-2 transition-colors"
+                    >
+                        <Search size={18} />
+                        <span className="hidden sm:inline font-medium">Search Job</span>
+                    </Button>
                 </div>
             </div>
 
 
-            <div>
-                <div>
-                    <h1 className="flex text-4xl font-bold items-center mx-20 my-3">Recent Jobs</h1>
-                    <p className="flex items-center mx-20">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero ipsum, doloribus sint vitae fugit est porro!</p>
-                    {/* ✅ Job Cards Section */}
-                    {jobs?.data?.map((job) => (
-                        <Card key={job.id} className="block mx-20 my-5 transition-transform hover:scale-[1.01]">
-                            <CardHeader className="flex flex-row justify-between items-start">
-                                <div>
-                                    <CardTitle className="font-mono">{job.company?.name ?? "No Company"}</CardTitle>
-                                    <CardTitle className="text-[#309689]">{job.title}</CardTitle>
-                                    <CardDescription>Salary: {job.salary}</CardDescription>
-                                </div>
-                                <div className="flex gap-2 self-start">
 
+            <div className="px-4 sm:px-6 md:px-12 lg:px-20 mt-10">
+                <h1 className="flex text-3xl font-bold items-center px-10 mb-2">Recent Jobs</h1>
+                <p className="text-md sm:text-sm mb-5 px-10">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero ipsum, doloribus sint vitae fugit est porro!</p>
+
+
+                {/* ✅ Job Cards Section */}
+
+                    {jobs?.data?.map((job) => (
+                        <Card key={job.id} className="block mx-10 my-5 transition-transform hover:scale-[1.01]">
+                            <CardHeader className="flex flex-col sm:flex-row sm:justify-between items-center gap-3">
+                                <div>
+                                    <CardTitle className="font-mono text-center sm:text-left ">{job.company?.name ?? "No Company"}</CardTitle>
+                                    <CardTitle className="text-[#309689] text-center sm:text-left ">{job.title}</CardTitle>
+                                    <CardDescription className="text-center sm:text-left ">Salary: {job.salary}</CardDescription>
+                                </div>
+
+                                <div className="flex gap-2 items-center justify-center">
                                     <Link
                                         // href="/jobSeeker/savedJobs"
-                                        className="p-2 rounded transition"
+                                        className="p-0 rounded transition"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             if (!auth.user)
@@ -316,14 +311,14 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                             })
                                         }}>
                                         {auth.user && savedJobs.includes(job.id) ? (
-                                            <Bookmark className={`h-6 w-6 text-[#309689] ${animateId === job.id ? "animate-pop" : ""}`} fill="currentColor" />
+                                            <Bookmark className={`h-7 w-7 text-[#309689] ${animateId === job.id ? "animate-pop" : ""} flex justify-center`} fill="currentColor" />
                                         ) : (
-                                            <Bookmark className={`h-6 w-6 text-gray-600 ${animateId === job.id ? "animate-pop" : ""}`} />
+                                            <Bookmark className={`h-7 w-7 text-gray-600 ${animateId === job.id ? "animate-pop" : ""} flex justify-center`} />
                                         )}
                                     </Link>
                                     <Link
                                         href={`/jobs/apply/${job.id}`}
-                                        className="text-white bg-[#309689] px-4 py-2 rounded hover:bg-teal-600 transition-colors"
+                                        className="text-white bg-[#309689] px-3 py-1.5 align-baseline rounded hover:bg-teal-600 transition-colors"
                                     >
                                         Apply
                                     </Link>
@@ -334,8 +329,8 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                         </Card>
                     ))
                     }
-                </div>
-                <Pagination className="mb-4">
+
+                <Pagination className="mt-6 mb-6">
                     <PaginationContent>
                         {/* previous */}
                         <PaginationPrevious

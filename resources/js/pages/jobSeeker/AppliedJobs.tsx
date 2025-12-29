@@ -55,18 +55,6 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
 
     const [hasUnread, setHasUnread] = useState(true);
 
-    // const [appliedJobs, setAppliedJobs] = useState<JobApplication[]>([])
-    // const [loading, setLoading] = useState(true);
-
-    // useEffect(() => {
-    //     fetch('api/user/applied-jobs')
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             setAppliedJobs(data);
-    //             setLoading(false);
-    //         });
-    // }, []);
-
     const handlePagination = (url?: string | null) => {
         if (!url) return
         Inertia.get(url, {}, { preserveState: true })
@@ -75,8 +63,8 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
 
     return (
         <div>
-            <header className="flex items-center justify-between w-full px-6 py-4">
-                <div className="flex flex-wrap items-center font-bold text-2xl">
+            <header className="flex flex-wrap items-center justify-between w-full px-4 md:px-6 py-4">
+                <div className="flex items-center font-bold text-2xl mb-2 md:mb-0">
                     <BriefcaseBusiness className="mr-2" />
                     <h3 className="text-[#309689]"> Job Portal</h3>
                 </div>
@@ -84,7 +72,7 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
                 <div>
                     <NavigationMenu viewport={isMobile}>
 
-                        <NavigationMenuList className="flex-wrap">
+                        <NavigationMenuList className="flex flex-wrap gap-1">
                             {links.map((link) => (
 
                                 <NavigationMenuItem key={link.href}>
@@ -119,7 +107,7 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
                 </div>
 
 
-                <div className="flex items-center gap-4 align-baseline">
+                <div className="flex items-center gap-2 md:gap-4 flex-wrap">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
@@ -231,27 +219,25 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
                     )}
 
                 </div>
-
-
-
-
             </header >
-            <div>
-                <h2 className="flex text-4xl font-bold items-center mx-20 my-3">Applied Jobs</h2>
+
+
+            <div >
+                <h3 className="flex sm:text-4xl text-3xl font-bold justify-center mx-10 my-3">Applied Jobs</h3>
 
                 {jobs?.data?.map(job => (
-                    <Card key={job.id} className="block mx-20 my-5 transition-transform hover:scale-[1.01]">
-                        <CardHeader className="flex flex-row justify-between items-start">
+                    <Card key={job.id} className="block mx-10 my-5 transition-transform hover:scale-[1.01]">
+                        <CardHeader className="flex flex-col sm:flex-row sm:justify-between items-center gap-3">
                             <div>
-                                <CardTitle className="font-mono">{job.company?.name}</CardTitle>
-                                <CardTitle className="text-[#309689]">{job.title}</CardTitle>
-                                <CardDescription>Salary: {job.salary}</CardDescription>
+                                <CardTitle className="text-center sm:text-left  font-mono">{job.company?.name}</CardTitle>
+                                <CardTitle className="text-center sm:text-left  text-[#309689]">{job.title}</CardTitle>
+                                <CardDescription className="text-center sm:text-left ">Salary: {job.salary}</CardDescription>
                             </div>
                         </CardHeader>
                     </Card>
                 ))}
             </div>
-            <Pagination className="mb-4">
+            <Pagination className="mt-6 mb-6">
                 <PaginationContent>
                     {/* previous */}
                     <PaginationPrevious
