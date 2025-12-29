@@ -40,20 +40,20 @@ export default function JobsApplied({ applications }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
         <div>
-            <h2 className="flex text-4xl font-bold items-center mx-20 my-3">Applied Jobs</h2>
+            <h2 className="flex text-4xl font-bold items-center mx-5 my-3">Applied Jobs</h2>
 
             {applications?.data?.map(app => (
-                <Card key={app.id} className="block mx-20 my-5 transition-transform hover:scale-[1.01]">
+                <Card key={app.id} className="block mx-5 my-5 transition-transform hover:scale-[1.01]">
                     <CardHeader className="flex flex-row justify-between items-start">
                         <div>
                             <CardTitle className="font-mono">{app.job?.title}</CardTitle>
                             <CardTitle className="text-[#309689]">{app.seeker.name}</CardTitle>
-                            <CardContent>Resume: {app.resume ?
-                                <a href={`/resume/${app.resume.replace('resumes/', '')}`} target="_blank">View</a>
+                            <CardContent><span className="font-bold">Resume:</span> {app.resume ?
+                                <a href={`/resume/${app.resume.replace('resumes/', '')}`} target="_blank" className="text-blue-500">View</a>
                                 : 'Not Uploaded'}
                             </CardContent>
-                            <CardContent>Letter: {app.cover_letter || 'No Cover Letter'}</CardContent>
-                            <CardFooter>Applied at: {app.applied_at}</CardFooter>
+                            <CardContent><span className="font-bold">Letter:</span> {app.cover_letter || 'No Cover Letter'}</CardContent>
+                            <CardFooter><span className="font-bold">Applied at:</span> { app.applied_at }</CardFooter>
                         </div>
                     </CardHeader>
                 </Card>
