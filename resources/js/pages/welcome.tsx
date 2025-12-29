@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Inertia } from "@inertiajs/inertia"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 interface Job {
     id: number;
@@ -85,16 +86,57 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
     };
     return (
         <div>
-            <header className="flex flex-wrap items-center justify-between w-full px-4 md:px-6 py-4">
-                <div className="flex items-center font-bold text-2xl mb-2 md:mb-0">
-                    <BriefcaseBusiness className="mr-2" />
-                    <h3 className="text-[#309689]"> Job Portal</h3>
-                </div>
+            <header className="flex items-center justify-between w-full px-4 md:px-6 py-4">
+                <Sheet>
+                    {/* Logo + Mobile Trigger */}
+                    <SheetTrigger asChild className="md:hidden">
+                        <button className="flex items-center font-bold text-2xl focus:outline-none">
+                            <BriefcaseBusiness className="mr-2" />
+                            <h4 className="text-[#309689] text-xl">Job Portal</h4>
+                        </button>
+                    </SheetTrigger>
 
-                <div>
+                    {/* Desktop Logo */}
+                    <div className="hidden md:flex items-center font-bold text-2xl">
+                        <BriefcaseBusiness className="mr-2" />
+                        <h3 className="text-[#309689]">Job Portal</h3>
+                    </div>
+
+                    {/* Mobile Sheet */}
+                    <SheetContent side="right" className="w-64">
+                        <nav className="flex flex-col gap-3 mt-10 ">
+                            {links.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={`px-3 py-2 m-1 rounded-full ${currentPath === link.href
+                                            ? "bg-[#309689] text-white"
+                                            : "hover:bg-gray-100"
+                                        }`}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+
+                            <Link
+                                href="/resume"
+                                className={`mx-1 px-3 py-2 rounded-full ${currentPath === "/resume"
+                                        ? "bg-[#309689] text-white"
+                                        : "hover:bg-gray-100"
+                                    }`}
+                            >
+                                Resume
+                            </Link>
+                        </nav>
+                    </SheetContent>
+                </Sheet>
+
+
+                {/* Desktop Navigation */}
+                <div className="hidden md:block">
                     <NavigationMenu viewport={isMobile}>
 
-                        <NavigationMenuList className="flex flex-wrap gap-1">
+                        <NavigationMenuList className="flex gap-1">
                             {links.map((link) => (
 
                                 <NavigationMenuItem key={link.href}>
@@ -126,7 +168,6 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                     </NavigationMenu>
 
                 </div>
-
 
                 <div className="flex items-center gap-2 md:gap-4 flex-wrap">
                     <Tooltip>
@@ -276,59 +317,59 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
 
                 {/* ✅ Job Cards Section */}
 
-                    {jobs?.data?.map((job) => (
-                        <Card key={job.id} className="block mx-10 my-5 transition-transform hover:scale-[1.01]">
-                            <CardHeader className="flex flex-col sm:flex-row sm:justify-between items-center gap-3">
-                                <div>
-                                    <CardTitle className="font-mono text-center sm:text-left ">{job.company?.name ?? "No Company"}</CardTitle>
-                                    <CardTitle className="text-[#309689] text-center sm:text-left ">{job.title}</CardTitle>
-                                    <CardDescription className="text-center sm:text-left ">Salary: {job.salary}</CardDescription>
-                                </div>
+                {jobs?.data?.map((job) => (
+                    <Card key={job.id} className="block mx-10 my-5 transition-transform hover:scale-[1.01]">
+                        <CardHeader className="flex flex-col sm:flex-row sm:justify-between items-center gap-3">
+                            <div>
+                                <CardTitle className="font-mono text-center sm:text-left ">{job.company?.name ?? "No Company"}</CardTitle>
+                                <CardTitle className="text-[#309689] text-center sm:text-left ">{job.title}</CardTitle>
+                                <CardDescription className="text-center sm:text-left ">Salary: {job.salary}</CardDescription>
+                            </div>
 
-                                <div className="flex gap-2 items-center justify-center">
-                                    <Link
-                                        // href="/jobSeeker/savedJobs"
-                                        className="p-0 rounded transition"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (!auth.user)
-                                                return router.visit(login());
+                            <div className="flex gap-2 items-center justify-center">
+                                <Link
+                                    // href="/jobSeeker/savedJobs"
+                                    className="p-0 rounded transition"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (!auth.user)
+                                            return router.visit(login());
 
-                                            // trigger animation
-                                            setAnimateId(job.id);
-                                            setTimeout(() => setAnimateId(null), 300);
-
-
-                                            router.post(`/jobSeeker/save-job/${job.id}`, {}, {
-                                                onSuccess: () => {
-                                                    // toggle in UI
-                                                    setSavedJobs(prev =>
-                                                        prev.includes(job.id)
-                                                            ? prev.filter(id => id !== job.id)
-                                                            : [...prev, job.id]
-                                                    );
-                                                }
-                                            })
-                                        }}>
-                                        {auth.user && savedJobs.includes(job.id) ? (
-                                            <Bookmark className={`h-7 w-7 text-[#309689] ${animateId === job.id ? "animate-pop" : ""} flex justify-center`} fill="currentColor" />
-                                        ) : (
-                                            <Bookmark className={`h-7 w-7 text-gray-600 ${animateId === job.id ? "animate-pop" : ""} flex justify-center`} />
-                                        )}
-                                    </Link>
-                                    <Link
-                                        href={`/jobs/apply/${job.id}`}
-                                        className="text-white bg-[#309689] px-3 py-1.5 align-baseline rounded hover:bg-teal-600 transition-colors"
-                                    >
-                                        Apply
-                                    </Link>
-                                </div>
+                                        // trigger animation
+                                        setAnimateId(job.id);
+                                        setTimeout(() => setAnimateId(null), 300);
 
 
-                            </CardHeader>
-                        </Card>
-                    ))
-                    }
+                                        router.post(`/jobSeeker/save-job/${job.id}`, {}, {
+                                            onSuccess: () => {
+                                                // toggle in UI
+                                                setSavedJobs(prev =>
+                                                    prev.includes(job.id)
+                                                        ? prev.filter(id => id !== job.id)
+                                                        : [...prev, job.id]
+                                                );
+                                            }
+                                        })
+                                    }}>
+                                    {auth.user && savedJobs.includes(job.id) ? (
+                                        <Bookmark className={`h-7 w-7 text-[#309689] ${animateId === job.id ? "animate-pop" : ""} flex justify-center`} fill="currentColor" />
+                                    ) : (
+                                        <Bookmark className={`h-7 w-7 text-gray-600 ${animateId === job.id ? "animate-pop" : ""} flex justify-center`} />
+                                    )}
+                                </Link>
+                                <Link
+                                    href={`/jobs/apply/${job.id}`}
+                                    className="text-white bg-[#309689] px-3 py-1.5 align-baseline rounded hover:bg-teal-600 transition-colors"
+                                >
+                                    Apply
+                                </Link>
+                            </div>
+
+
+                        </CardHeader>
+                    </Card>
+                ))
+                }
 
                 <Pagination className="mt-6 mb-6">
                     <PaginationContent>

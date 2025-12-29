@@ -8,10 +8,11 @@ import { SharedData } from "@/types"
 import { Link, usePage } from "@inertiajs/react"
 import { Bell, Bookmark, BriefcaseBusiness, LogOut } from "lucide-react"
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
-import {  useState } from "react"
+import { useState } from "react"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Inertia } from "@inertiajs/inertia"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 interface JobApplication {
     id: number;
@@ -63,13 +64,53 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
 
     return (
         <div>
-            <header className="flex flex-wrap items-center justify-between w-full px-4 md:px-6 py-4">
-                <div className="flex items-center font-bold text-2xl mb-2 md:mb-0">
-                    <BriefcaseBusiness className="mr-2" />
-                    <h3 className="text-[#309689]"> Job Portal</h3>
-                </div>
+            <header className="flex items-center justify-between w-full px-4 md:px-6 py-4">
+                <Sheet>
+                    {/* Logo + Mobile Trigger */}
+                    <SheetTrigger asChild className="md:hidden">
+                        <button className="flex items-center font-bold text-2xl focus:outline-none">
+                            <BriefcaseBusiness className="mr-2" />
+                            <h4 className="text-[#309689] text-xl">Job Portal</h4>
+                        </button>
+                    </SheetTrigger>
 
-                <div>
+                    {/* Desktop Logo */}
+                    <div className="hidden md:flex items-center font-bold text-2xl">
+                        <BriefcaseBusiness className="mr-2" />
+                        <h3 className="text-[#309689]">Job Portal</h3>
+                    </div>
+
+                    {/* Mobile Sheet */}
+                    <SheetContent side="right" className="w-64">
+                        <nav className="flex flex-col gap-3 mt-10 ">
+                            {links.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={`px-3 py-2 m-1 rounded-full ${currentPath === link.href
+                                        ? "bg-[#309689] text-white"
+                                        : "hover:bg-gray-100"
+                                        }`}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+
+                            <Link
+                                href="/resume"
+                                className={`mx-1 px-3 py-2 rounded-full ${currentPath === "/resume"
+                                    ? "bg-[#309689] text-white"
+                                    : "hover:bg-gray-100"
+                                    }`}
+                            >
+                                Resume
+                            </Link>
+                        </nav>
+                    </SheetContent>
+                </Sheet>
+
+                {/* Desktop Navigation */}
+                <div className="hidden md:block">
                     <NavigationMenu viewport={isMobile}>
 
                         <NavigationMenuList className="flex flex-wrap gap-1">
