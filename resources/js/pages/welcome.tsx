@@ -126,7 +126,6 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
 
                                 <a
                                     href="/resume"
-
                                     onClick={() => {
                                         setIsSheetOpen(false);
                                         cleanup();
