@@ -6,7 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { login, logout, register } from "@/routes"
 import { SharedData } from "@/types"
 import { Link, router, usePage } from "@inertiajs/react"
-import { Bell, Bookmark, BriefcaseBusiness, LogOut, Search } from "lucide-react"
+import { Bell, Bookmark, BriefcaseBusiness, LogOut, Search, UserRoundPen } from "lucide-react"
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
 import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
@@ -65,6 +65,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
     const [savedJobs, setSavedJobs] = useState<number[]>([]); // store saved job IDs
 
     const [animateId, setAnimateId] = useState<number | null>(null);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
 
 
     useEffect(() => {
@@ -84,52 +85,66 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
     const handleSearch = () => {
         router.get('/jobs', { search: searchTerm }, { preserveState: true });
     };
+    const showSheet = url !== ('/resume');
+
+    // // Handle resume navigation - full page navigation
+    // const handleResumeClick = () => {
+    //     setIsSheetOpen(false);
+    //     cleanup();
+    //     window.location.href = '/resume';
+    // };
     return (
         <div>
             <header className="flex items-center justify-between w-full px-4 md:px-6 py-4">
-                <Sheet>
-                    {/* Logo + Mobile Trigger */}
-                    <SheetTrigger asChild className="md:hidden">
-                        <button className="flex items-center font-bold text-2xl focus:outline-none">
+                {showSheet && (
+                    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                        {/* Logo + Mobile Trigger */}
+                        <SheetTrigger asChild className="md:hidden">
+                            <button className="flex items-center font-bold text-2xl focus:outline-none">
+                                <BriefcaseBusiness className="mr-2" />
+                                <h4 className="text-[#309689] text-xl">Job Portal</h4>
+                            </button>
+                        </SheetTrigger>
+
+                        {/* Desktop Logo */}
+                        <div className="hidden md:flex items-center font-bold text-2xl">
                             <BriefcaseBusiness className="mr-2" />
-                            <h4 className="text-[#309689] text-xl">Job Portal</h4>
-                        </button>
-                    </SheetTrigger>
+                            <h3 className="text-[#309689]">Job Portal</h3>
+                        </div>
 
-                    {/* Desktop Logo */}
-                    <div className="hidden md:flex items-center font-bold text-2xl">
-                        <BriefcaseBusiness className="mr-2" />
-                        <h3 className="text-[#309689]">Job Portal</h3>
-                    </div>
-
-                    {/* Mobile Sheet */}
-                    <SheetContent side="right" className="w-64">
-                        <nav className="flex flex-col gap-3 mt-10 ">
-                            {links.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className={`px-3 py-2 m-1 rounded-full ${currentPath === link.href
+                        {/* Mobile Sheet */}
+                        <SheetContent side="right" className="w-64 fixed top-0 right-0 h-full z-50">
+                            <nav className="flex flex-col gap-3 mt-10 ">
+                                {links.map((link) => (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        className={`px-3 py-2 m-1 rounded-full ${currentPath === link.href
                                             ? "bg-[#309689] text-white"
                                             : "hover:bg-gray-100"
-                                        }`}
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
+                                            }`}
+                                    >
+                                        {link.label}
+                                    </Link>
+                                ))}
 
-                            <Link
-                                href="/resume"
-                                className={`mx-1 px-3 py-2 rounded-full ${currentPath === "/resume"
+                                <a
+                                    onClick={() => {
+                                        setIsSheetOpen(false);
+                                        cleanup();
+                                    }}
+                                    className={`mx-1 px-3 py-2 rounded-full text-left ${url === "/resume"
                                         ? "bg-[#309689] text-white"
                                         : "hover:bg-gray-100"
-                                    }`}
-                            >
-                                Resume
-                            </Link>
-                        </nav>
-                    </SheetContent>
-                </Sheet>
+                                        }`}
+                                >
+                                    Resume
+                                </a>
+                            </nav>
+
+                        </SheetContent>
+                    </Sheet>
+                )}
 
 
                 {/* Desktop Navigation */}
@@ -170,6 +185,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                 </div>
 
                 <div className="flex items-center gap-2 md:gap-4 flex-wrap">
+
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
@@ -244,6 +260,15 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                             <DropdownMenuContent className="w-56 mr-3" align="start">
                                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                 <DropdownMenuGroup>
+                                    <DropdownMenuItem>
+                                        <Link
+                                            className="flex items-center w-full"
+                                            href="Profile/Index"
+                                        >
+                                            <UserRoundPen className="mr-2 h-4 w-4" />
+                                            My Profile
+                                        </Link>
+                                    </DropdownMenuItem>
                                     <DropdownMenuItem>
                                         <Link
                                             className="flex items-center w-full"
