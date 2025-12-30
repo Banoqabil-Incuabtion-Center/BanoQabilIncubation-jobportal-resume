@@ -61,53 +61,62 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
         Inertia.get(url, {}, { preserveState: true })
     }
 
+    const showSheet = url !== ('/resume');
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
 
     return (
         <div>
             <header className="flex items-center justify-between w-full px-4 md:px-6 py-4">
-                <Sheet>
-                    {/* Logo + Mobile Trigger */}
-                    <SheetTrigger asChild className="md:hidden">
-                        <button className="flex items-center font-bold text-2xl focus:outline-none">
+                {showSheet && (
+                    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                        {/* Logo + Mobile Trigger */}
+                        <SheetTrigger asChild className="md:hidden">
+                            <button className="flex items-center font-bold text-2xl focus:outline-none">
+                                <BriefcaseBusiness className="mr-2" />
+                                <h4 className="text-[#309689] text-xl">Job Portal</h4>
+                            </button>
+                        </SheetTrigger>
+
+                        {/* Desktop Logo */}
+                        <div className="hidden md:flex items-center font-bold text-2xl">
                             <BriefcaseBusiness className="mr-2" />
-                            <h4 className="text-[#309689] text-xl">Job Portal</h4>
-                        </button>
-                    </SheetTrigger>
+                            <h3 className="text-[#309689]">Job Portal</h3>
+                        </div>
 
-                    {/* Desktop Logo */}
-                    <div className="hidden md:flex items-center font-bold text-2xl">
-                        <BriefcaseBusiness className="mr-2" />
-                        <h3 className="text-[#309689]">Job Portal</h3>
-                    </div>
+                        {/* Mobile Sheet */}
+                        <SheetContent side="right" className="w-64">
+                            <nav className="flex flex-col gap-3 mt-10 ">
+                                {links.map((link) => (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        className={`px-3 py-2 m-1 rounded-full ${currentPath === link.href
+                                            ? "bg-[#309689] text-white"
+                                            : "hover:bg-gray-100"
+                                            }`}
+                                    >
+                                        {link.label}
+                                    </Link>
+                                ))}
 
-                    {/* Mobile Sheet */}
-                    <SheetContent side="right" className="w-64">
-                        <nav className="flex flex-col gap-3 mt-10 ">
-                            {links.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className={`px-3 py-2 m-1 rounded-full ${currentPath === link.href
+                                <a
+                                    href="/resume"
+                                    onClick={() => {
+                                        setIsSheetOpen(false);
+                                        cleanup();
+                                    }}
+                                    className={`mx-1 px-3 py-2 rounded-full ${url === "/resume"
                                         ? "bg-[#309689] text-white"
                                         : "hover:bg-gray-100"
                                         }`}
                                 >
-                                    {link.label}
-                                </Link>
-                            ))}
-
-                            <Link
-                                href="/resume"
-                                className={`mx-1 px-3 py-2 rounded-full ${currentPath === "/resume"
-                                    ? "bg-[#309689] text-white"
-                                    : "hover:bg-gray-100"
-                                    }`}
-                            >
-                                Resume
-                            </Link>
-                        </nav>
-                    </SheetContent>
-                </Sheet>
+                                    Resume
+                                </a>
+                            </nav>
+                        </SheetContent>
+                    </Sheet>
+                )}
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:block">

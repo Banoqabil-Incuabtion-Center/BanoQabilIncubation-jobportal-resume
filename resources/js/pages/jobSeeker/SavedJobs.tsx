@@ -70,10 +70,14 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
     }
 
     const [hasUnread, setHasUnread] = useState(true);
+
+    const showSheet = url !== ('/resume');
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
     return (
         <div>
             <header className="flex items-center justify-between w-full px-4 md:px-6 py-4">
-                <Sheet>
+                {showSheet && (
+                    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                     {/* Logo + Mobile Trigger */}
                     <SheetTrigger asChild className="md:hidden">
                         <button className="flex items-center font-bold text-2xl focus:outline-none">
@@ -104,19 +108,23 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                                 </Link>
                             ))}
 
-                            <Link
+                            <a
                                 href="/resume"
+                                onClick={() => {
+                                        setIsSheetOpen(false);
+                                        cleanup();
+                                    }}
                                 className={`mx-1 px-3 py-2 rounded-full ${currentPath === "/resume"
                                     ? "bg-[#309689] text-white"
                                     : "hover:bg-gray-100"
                                     }`}
                             >
                                 Resume
-                            </Link>
+                            </a>
                         </nav>
                     </SheetContent>
                 </Sheet>
-
+                )}
                 {/* Desktop Navigation */}
                 <div className="hidden md:block">
                     <NavigationMenu viewport={isMobile}>

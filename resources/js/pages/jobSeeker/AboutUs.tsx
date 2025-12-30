@@ -12,7 +12,7 @@ import { useState } from "react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 
-export default function Index({
+export default function AboutUs({
     canRegister = true,
 }: {
     canRegister?: boolean;
@@ -35,10 +35,14 @@ export default function Index({
     };
 
     const [hasUnread, setHasUnread] = useState(true);
+
+    const showSheet = url !== ('/resume');
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
     return (
         <div>
             <header className="flex items-center justify-between w-full px-4 md:px-6 py-4">
-                <Sheet>
+                {showSheet && (
+                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                     {/* Logo + Mobile Trigger */}
                     <SheetTrigger asChild className="md:hidden">
                         <button className="flex items-center font-bold text-2xl focus:outline-none">
@@ -69,18 +73,24 @@ export default function Index({
                                 </Link>
                             ))}
 
-                            <Link
+                            <a
                                 href="/resume"
+
+                                onClick={() => {
+                                    setIsSheetOpen(false);
+                                    cleanup();
+                                }}
                                 className={`mx-1 px-3 py-2 rounded-full ${url === "/resume"
                                     ? "bg-[#309689] text-white"
                                     : "hover:bg-gray-100"
                                     }`}
                             >
                                 Resume
-                            </Link>
+                            </a>
                         </nav>
                     </SheetContent>
                 </Sheet>
+                )}
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:block">
