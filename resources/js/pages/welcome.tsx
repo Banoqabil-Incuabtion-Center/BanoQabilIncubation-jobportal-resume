@@ -65,7 +65,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
     const [savedJobs, setSavedJobs] = useState<number[]>([]); // store saved job IDs
 
     const [animateId, setAnimateId] = useState<number | null>(null);
-    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
 
 
     useEffect(() => {
@@ -85,14 +85,10 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
     const handleSearch = () => {
         router.get('/jobs', { search: searchTerm }, { preserveState: true });
     };
-    const showSheet = url !== ('/resume');
 
-    // // Handle resume navigation - full page navigation
-    // const handleResumeClick = () => {
-    //     setIsSheetOpen(false);
-    //     cleanup();
-    //     window.location.href = '/resume';
-    // };
+    const showSheet = url !== ('/resume');
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
     return (
         <div>
             <header className="flex items-center justify-between w-full px-4 md:px-6 py-4">
@@ -129,11 +125,13 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                 ))}
 
                                 <a
+                                    href="/resume"
+
                                     onClick={() => {
                                         setIsSheetOpen(false);
                                         cleanup();
                                     }}
-                                    className={`mx-1 px-3 py-2 rounded-full text-left ${url === "/resume"
+                                    className={`mx-1 px-3 py-2 rounded-full ${url === "/resume"
                                         ? "bg-[#309689] text-white"
                                         : "hover:bg-gray-100"
                                         }`}
