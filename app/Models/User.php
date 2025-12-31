@@ -9,14 +9,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\MediaLibrary\HasMedia; // for spatie Media
+use Spatie\MediaLibrary\InteractsWithMedia;  // for spatie Media
+use Spatie\MediaLibrary\MediaCollections\Models\Media; // Don't forget this for conversions!
 
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
+    use InteractsWithMedia;
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
+    protected $with = ['media']; // always load media relationship
     /**
      * The attributes that are mass assignable.
      *
@@ -29,7 +34,36 @@ class User extends Authenticatable
         'role',
         'company_id',
     ];
+    protected $appends = ['avatar_url'];
 
+    public function getAvatarUrlAttribute()
+    {
+        $url = $this->getFirstMediaUrl('avatar');
+        return $url ?: null; // Return null if empty string
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')
+            ->useDisk('public')
+            ->singleFile(); // only ONE profile picture
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        // Convert all images to webp format for better performance
+        $this->addMediaConversion('webp')
+            ->format('webp')
+            ->nonQueued(); // Use nonQueued for smaller apps, or queued for larger ones
+
+        // Create a thumbnail version (optional but very useful!)
+        $this->addMediaConversion('thumb')
+            ->format('webp') // Also make the thumbnail webp
+            ->width(300)
+            ->height(200)
+            ->sharpen(10) // Make it a bit sharper
+            ->nonQueued();
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -91,7 +125,7 @@ class User extends Authenticatable
             'user_id',
             'job_id'
         )->withTimestamps()
-        ->orderBy('job_applications.created_at', 'desc');;
+            ->orderBy('job_applications.created_at', 'desc');;
     }
 
     //     public function applied()
