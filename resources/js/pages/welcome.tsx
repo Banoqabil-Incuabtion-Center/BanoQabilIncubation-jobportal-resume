@@ -260,7 +260,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                     <DropdownMenuItem>
                                         <Link
                                             className="flex items-center w-full"
-                                            href="Profile/Index"
+                                            href="/Profile/Index"
                                         >
                                             <UserRoundPen className="mr-2 h-4 w-4" />
                                             My Profile
