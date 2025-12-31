@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\SeekerController;
 use App\Models\Job;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
@@ -28,12 +30,20 @@ Route::get('/register/jobseeker', function () {
 
 Route::get('jobs', [JobController::class, 'index'])->name('jobs.index');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/Profile/Index', function () {
+        return Inertia::render('Profile/Index');
+    })->name('profile.index');
+    Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar']);
+    Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar']);
+});
+
 Route::middleware(['auth', 'verified', 'role:recruiter'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    
+
     Route::get('jobs/create', [JobController::class, 'create'])->name('jobs.create');
     Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
     Route::get('/jobs/myJobs', [JobController::class, 'myJobs'])->name('jobs.myJobs');
@@ -64,10 +74,6 @@ Route::middleware(['auth', 'verified', 'role:jobSeeker'])->group(function () {
         return Inertia::render('jobSeeker/ContactUs');
     })->name('jobSeeker.contactUs');
 
-    // Route::get('/jobSeeker/savedJobs', function () {
-    //     return Inertia::render('jobSeeker/SavedJobs');
-    // })->name('jobSeeker.savedJobs');
-
     //bookmark jobs
     Route::post('/jobSeeker/save-job/{job}', [SeekerController::class, 'saveJob'])->name('s.saveJob');
     Route::get('/jobSeeker/savedJobs', [SeekerController::class, 'savedJob'])->name('s.savedJobs');
@@ -81,21 +87,13 @@ Route::middleware(['auth', 'verified', 'role:jobSeeker'])->group(function () {
     Route::get('/jobSeeker/appliedJobs', [ApplicationController::class, 'appliedJob'])->name('s.appliedJobs');
 
     Route::get('/api/user/applied-jobs', [ApplicationController::class, 'getAppliedJobIds']);
-
 });
 
-Route::get('/resume', function() {
+Route::get('/resume', function () {
     return view('resume');
 });
-
-// Route::post('/api/resume/save', [ResumeController::class, 'saveResume']);
-
 Route::get('/resume/preview/{resume}', [ResumeController::class, 'preview'])->name('resume.preview');
 Route::get('/resume/download/{resume}', [ResumeController::class, 'downloadPdf'])->name('resume.download');
-// Route::delete('/api/resume/{resume}', [ResumeController::class, 'delete'])->name('resume.delete');
-
-
-// Route::get('/api/resume/get', [ResumeController::class, 'getResume']);
 
 
 
