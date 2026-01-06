@@ -43,6 +43,18 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
     const { url } = usePage()
     const currentPath = url.split('?')[0];
     const { auth } = usePage<SharedData>().props;
+    const user = auth.user;
+    const avatarSrc = user?.avatar_url || user?.avatar || undefined;
+
+    // Get user initials for fallback
+    const getUserInitials = (name: string) => {
+        return name
+            .split(' ')
+            .map(word => word[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2);
+    };
 
     // console.log("jobs:", jobs);
     // console.log("auth:", auth);
@@ -249,9 +261,8 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                 <Avatar>
                                     <AvatarImage
                                         className="cursor-pointer"
-                                        src="/avatar.jpg"
-                                        alt="avatar image" />
-                                    <AvatarFallback>IMG</AvatarFallback>
+                                        src={String(avatarSrc)} alt={user?.name || "User avatar"} />
+                                    <AvatarFallback className="bg-[#309689] text-white"> {user?.name ? getUserInitials(user.name) : 'U'}</AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56 mr-3" align="start">
