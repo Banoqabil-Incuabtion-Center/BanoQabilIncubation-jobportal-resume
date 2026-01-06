@@ -13,14 +13,20 @@ class ProfileController extends Controller
     //
     public function index()
     {
-        $user = Auth::user()->fresh();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        // /** @var \App\Models\User $user */
+        // $user->avatar_url = $user->getFirstMediaUrl('avatar');
         return Inertia::render('Profile/Index', [
-            'user' => $user->load('media'), // Ensure media is loaded
+            'auth' => [
+                'user' => $user
+            ]
         ]);
     }
 
     public function uploadAvatar(Request $request)
     {
+        // dd(PHP_VERSION, function_exists('avatarcreatefromstring'));
         $request->validate([
             'avatar' => 'required|image|max:2048',
         ]);
