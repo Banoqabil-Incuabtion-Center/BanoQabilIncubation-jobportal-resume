@@ -5,13 +5,12 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useIsMobile } from "@/hooks/use-mobile"
 import { login, logout, register } from "@/routes"
 import { SharedData } from "@/types"
-import { Link, usePage } from "@inertiajs/react"
+import { Link, router, usePage } from "@inertiajs/react"
 import { Bell, Bookmark, BriefcaseBusiness, LogOut } from "lucide-react"
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
 import { useState } from "react"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
-import { Inertia } from "@inertiajs/inertia"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 interface JobApplication {
@@ -70,7 +69,10 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
 
     const handlePagination = (url?: string | null) => {
         if (!url) return
-        Inertia.get(url, {}, { preserveState: true })
+               router.visit(url, {
+           preserveState: true,
+           preserveScroll: true,
+         })
     }
 
     const showSheet = url !== ('/resume');
@@ -302,7 +304,10 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
                 <PaginationContent>
                     {/* previous */}
                     <PaginationPrevious
-                        onClick={() => handlePagination(jobs.links[0].url)}
+                    href={jobs.links[0].url || undefined}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePagination(jobs.links[0].url)}}
                         className={!jobs.links[0].url ? "opacity-50 pointer-events-none" : ""}
                     />
 
@@ -317,8 +322,11 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
                         return (
                             <PaginationItem key={link.label}>
                                 <PaginationLink
+                                href = {link.url || undefined}
                                     isActive={link.active}
-                                    onClick={() => handlePagination(link.url)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handlePagination(link.url)}}
                                 >
                                     {link.label.replace(/&laquo;|&raquo;/g, '')}
                                 </PaginationLink>
@@ -330,6 +338,7 @@ export default function AppliedJobs({ jobs, canRegister = true }: AppliedProps) 
 
                     {/* next */}
                     <PaginationNext
+                    href = {jobs.links[jobs.links.length - 1].url || undefined}
                         onClick={() => handlePagination(jobs.links[jobs.links.length - 1].url)}
                         className={!jobs.links[jobs.links.length - 1].url ? "opacity-50 pointer-events-none" : ""} />
                 </PaginationContent>

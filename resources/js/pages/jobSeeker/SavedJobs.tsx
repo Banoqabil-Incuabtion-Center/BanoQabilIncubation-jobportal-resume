@@ -104,8 +104,11 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
     }, [auth]);
 
     const handlePagination = (url?: string | null) => {
-        if (!url) return;
-        Inertia.get(url, {}, { preserveState: true });
+        if (!url) return
+        router.visit(url, {
+    preserveState: true,
+    preserveScroll: true,
+  })
     };
 
     const [hasUnread, setHasUnread] = useState(true);
@@ -413,7 +416,10 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                 <PaginationContent>
                     {/* previous */}
                     <PaginationPrevious
-                        onClick={() => handlePagination(jobs.links[0].url)}
+                    href ={jobs.links[0].url || undefined}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePagination(jobs.links[0].url)}}
                         className={
                             !jobs.links[0].url
                                 ? 'pointer-events-none opacity-50'
@@ -430,8 +436,11 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                         return (
                             <PaginationItem key={index}>
                                 <PaginationLink
+                                href = {link.url || undefined}
                                     isActive={link.active}
-                                    onClick={() => handlePagination(link.url)}
+                                    onClick={(e) =>  {
+                                        e.preventDefault();
+                                        handlePagination(link.url)}}
                                 >
                                     {link.label.replace(/&laquo;|&raquo;/g, '')}
                                 </PaginationLink>
@@ -441,11 +450,13 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
 
                     {/* next */}
                     <PaginationNext
-                        onClick={() =>
+                    href={jobs.links[jobs.links.length -1].url || undefined}
+                        onClick={(e) => {
+                            e.preventDefault();
                             handlePagination(
                                 jobs.links[jobs.links.length - 1].url,
                             )
-                        }
+                        }}
                         className={
                             !jobs.links[jobs.links.length - 1].url
                                 ? 'pointer-events-none opacity-50'

@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
-import { Inertia } from "@inertiajs/inertia"
+// import { Inertia } from "@inertiajs/inertia"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 interface Job {
@@ -91,8 +91,12 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
 
     const handlePagination = (url?: string | null) => {
         if (!url) return
-        Inertia.get(url, {}, { preserveState: true })
+        router.visit(url, {
+    preserveState: true,
+    preserveScroll: true,
+  })
     }
+
     const [searchTerm, setSearchTerm] = useState("");
     const handleSearch = () => {
         router.get('/jobs', { search: searchTerm }, { preserveState: true });
@@ -408,7 +412,10 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                     <PaginationContent>
                         {/* previous */}
                         <PaginationPrevious
-                            onClick={() => handlePagination(jobs.links[0].url)}
+                        href={jobs.links[0].url || undefined}
+                            onClick={(e) => {
+                                 e.preventDefault();
+                                handlePagination(jobs.links[0].url)}}
                             className={!jobs.links[0].url ? "opacity-50 pointer-events-none" : ""}
                         />
 
@@ -423,8 +430,12 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                             return (
                                 <PaginationItem key={index}>
                                     <PaginationLink
+                                    href={link.url || undefined}
                                         isActive={link.active}
-                                        onClick={() => handlePagination(link.url)}
+                                        onClick={(e) => {
+        e.preventDefault();
+        handlePagination(link.url);
+    }}
                                     >
                                         {link.label.replace(/&laquo;|&raquo;/g, '')}
                                     </PaginationLink>
@@ -436,7 +447,10 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
 
                         {/* next */}
                         <PaginationNext
-                            onClick={() => handlePagination(jobs.links[jobs.links.length - 1].url)}
+                        href={jobs.links[jobs.links.length - 1].url || undefined}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handlePagination(jobs.links[jobs.links.length - 1].url)}}
                             className={!jobs.links[jobs.links.length - 1].url ? "opacity-50 pointer-events-none" : ""} />
                     </PaginationContent>
                 </Pagination>

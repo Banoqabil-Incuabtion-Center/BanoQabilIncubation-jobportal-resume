@@ -1,10 +1,10 @@
 import AppLayout from '@/layouts/app-layout';
 import React, { useState } from 'react';
-import { Inertia } from '@inertiajs/inertia';
+import { hrefToUrl, Inertia } from '@inertiajs/inertia';
 import { toast } from "sonner";
 import { type BreadcrumbItem } from '@/types';
 import { Button } from '@/components/ui/button';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import CreateJobForm from './Create';
 import Edit from './Edit';
 import { Dialog, DialogFooter, DialogHeader, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -100,8 +100,11 @@ export default function MyJobs({ jobs }: MyJobsProps) {
     const [selectedJob, setSelectedJob] = useState<JobData | null>(null);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const handlePagination = (url?: string | null) => {
-        if (!url) return
-        Inertia.get(url, {}, { preserveState: true })
+         if (!url) return
+                router.visit(url, {
+            preserveState: true,
+            preserveScroll: true,
+          })
     }
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -200,11 +203,14 @@ export default function MyJobs({ jobs }: MyJobsProps) {
             </div>
 
             {/* PAGINATION */}
-            <Pagination>
+            <Pagination className='mt-6 mb-6'>
                 <PaginationContent>
                     {/* previous */}
                     <PaginationPrevious
-                        onClick={() => handlePagination(jobs.links[0].url)}
+                    href={jobs.links[0].url || undefined}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePagination(jobs.links[0].url)}}
                         className={!jobs.links[0].url ? "opacity-50 pointer-events-none" : ""}
                     />
 
@@ -219,8 +225,11 @@ export default function MyJobs({ jobs }: MyJobsProps) {
                         return (
                             <PaginationItem key={index}>
                                 <PaginationLink
+                                href={link.url || undefined}
                                     isActive={link.active}
-                                    onClick={() => handlePagination(link.url)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handlePagination(link.url)}}
                                 >
                                     {link.label.replace(/&laquo;|&raquo;/g, '')}
                                 </PaginationLink>
@@ -232,6 +241,7 @@ export default function MyJobs({ jobs }: MyJobsProps) {
 
                     {/* next */}
                     <PaginationNext
+                    href={jobs.links[jobs.links.length - 1].url || undefined}
                         onClick={() => handlePagination(jobs.links[jobs.links.length - 1].url)}
                         className={!jobs.links[jobs.links.length - 1].url ? "opacity-50 pointer-events-none" : ""} />
                 </PaginationContent>
