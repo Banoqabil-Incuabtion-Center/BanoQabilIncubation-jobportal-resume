@@ -359,9 +359,9 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                             </div>
 
                             <div className="flex items-center justify-center gap-2">
-                                <Link
+                                <button
                                     // href="/jobSeeker/savedJobs"
-                                    className="rounded p-0 transition"
+                                    className="cursor-pointer rounded p-0 transition"
                                     onClick={() => {
                                         if (!auth.user) return;
 
@@ -375,6 +375,8 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                                             `/jobSeeker/save-job/${job.id}`,
                                             {},
                                             {
+                                                preserveScroll: true,
+                                                preserveState: true,
                                                 onSuccess: () => {
                                                     // toggle in UI
                                                     setSavedJobs((prev) =>
@@ -406,7 +408,7 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                                         ) : (
                                             <Bookmark className="h-6 w-6 text-gray-600" />
                                         )} */}
-                                </Link>
+                                </button>
                                 <Link
                                     href={`/jobSeeker/apply/${job.id}`}
                                     className="rounded bg-[#309689] px-3 py-1.5 text-white transition-colors hover:bg-teal-600"

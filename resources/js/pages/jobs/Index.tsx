@@ -286,11 +286,10 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                             </CardDescription>
                         </div>
                         <div className="flex gap-2 self-start">
-                            <Link
+                            <button
                                 // href="/jobSeeker/savedJobs"
-                                className="rounded p-2 transition"
+                                className="rounded p-2 transition cursor-pointer"
                                 onClick={(e) => {
-                                    e.preventDefault();
                                     if (!auth.user)
                                         return router.visit(login());
 
@@ -302,6 +301,8 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                         `/jobSeeker/save-job/${job.id}`,
                                         {},
                                         {
+                                            preserveScroll: true,
+                                            preserveState: true,
                                             onSuccess: () => {
                                                 // toggle in UI
                                                 setSavedJobs((prev) =>
@@ -327,7 +328,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                         className={`h-6 w-6 text-gray-600 ${animateId === job.id ? 'animate-pop' : ''}`}
                                     />
                                 )}
-                            </Link>
+                            </button>
                             <Link
                                 href={`/jobs/apply/${job.id}`}
                                 className="rounded bg-[#309689] px-4 py-2 text-white transition-colors hover:bg-teal-600"

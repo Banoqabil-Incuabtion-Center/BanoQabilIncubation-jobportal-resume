@@ -435,11 +435,10 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                             </div>
 
                             <div className="flex items-center justify-center gap-2">
-                                <Link
+                                <button
                                     // href="/jobSeeker/savedJobs"
-                                    className="rounded p-0 transition"
+                                    className="rounded p-0 transition cursor-pointer"
                                     onClick={(e) => {
-                                        e.preventDefault();
                                         if (!auth.user)
                                             return router.visit(login());
 
@@ -454,6 +453,8 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                             `/jobSeeker/save-job/${job.id}`,
                                             {},
                                             {
+                                                preserveScroll: true,
+                                                preserveState: true,
                                                 onSuccess: () => {
                                                     // toggle in UI
                                                     setSavedJobs((prev) =>
@@ -480,7 +481,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                             className={`h-7 w-7 text-gray-600 ${animateId === job.id ? 'animate-pop' : ''} flex justify-center`}
                                         />
                                     )}
-                                </Link>
+                                </button>
                                 <Link
                                     href={`/jobs/apply/${job.id}`}
                                     className="rounded bg-[#309689] px-3 py-1.5 align-baseline text-white transition-colors hover:bg-teal-600"
