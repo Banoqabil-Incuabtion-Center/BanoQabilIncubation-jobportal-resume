@@ -8,6 +8,7 @@ import {
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -94,10 +95,10 @@ function ConfirmAlert({ id }: ConfirmAlertProps) {
                         <DialogTitle>Delete Job</DialogTitle>
                     </DialogHeader>
 
-                    <p className="mt-1 text-sm text-gray-600">
+                    <DialogDescription className="mt-1 text-sm text-gray-600">
                         Are you sure you want to delete this job? This action
                         cannot be undone.
-                    </p>
+                    </DialogDescription>
 
                     <DialogFooter className="mt-4">
                         <Button
