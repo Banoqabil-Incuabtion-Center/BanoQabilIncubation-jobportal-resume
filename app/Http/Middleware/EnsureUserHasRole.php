@@ -13,18 +13,17 @@ class EnsureUserHasRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-public function handle(Request $request, Closure $next, ?string $role = null): Response
-{
-    $user = $request->user();
+    public function handle(Request $request, Closure $next, ?string $role = null): Response
+    {
+        $user = $request->user();
 
-    // dd($user->role, $role);
+        // dd($user->role, $role);
 
-    // Check if user exists and has the role passed from the route
-    if ($user && $role && $user->role === $role) {
-        return $next($request);
+        // Check if user exists and has the role passed from the route
+        if ($user && $role && $user->role === $role) {
+            return $next($request);
+        }
+
+        abort(403);
     }
-
-    abort(403);
-}
-
 }

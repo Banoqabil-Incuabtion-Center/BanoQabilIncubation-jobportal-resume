@@ -38,7 +38,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { login, logout, register } from '@/routes';
 import { SharedData } from '@/types';
-import { Inertia } from '@inertiajs/inertia';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Bell, Bookmark, BriefcaseBusiness, LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -104,11 +103,11 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
     }, [auth]);
 
     const handlePagination = (url?: string | null) => {
-        if (!url) return
+        if (!url) return;
         router.visit(url, {
-    preserveState: true,
-    preserveScroll: true,
-  })
+            preserveState: true,
+            preserveScroll: true,
+        });
     };
 
     const [hasUnread, setHasUnread] = useState(true);
@@ -282,8 +281,15 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                                 <Avatar>
                                     <AvatarImage
                                         className="cursor-pointer"
-                                       src={String(avatarSrc)} alt={user?.name || "User avatar"} />
-                                    <AvatarFallback className="bg-[#309689] text-white"> {user?.name ? getUserInitials(user.name) : 'U'}</AvatarFallback>
+                                        src={String(avatarSrc)}
+                                        alt={user?.name || 'User avatar'}
+                                    />
+                                    <AvatarFallback className="bg-[#309689] text-white">
+                                        {' '}
+                                        {user?.name
+                                            ? getUserInitials(user.name)
+                                            : 'U'}
+                                    </AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent
@@ -416,10 +422,11 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                 <PaginationContent>
                     {/* previous */}
                     <PaginationPrevious
-                    href ={jobs.links[0].url || undefined}
+                        href={jobs.links[0].url || undefined}
                         onClick={(e) => {
                             e.preventDefault();
-                            handlePagination(jobs.links[0].url)}}
+                            handlePagination(jobs.links[0].url);
+                        }}
                         className={
                             !jobs.links[0].url
                                 ? 'pointer-events-none opacity-50'
@@ -436,11 +443,12 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
                         return (
                             <PaginationItem key={index}>
                                 <PaginationLink
-                                href = {link.url || undefined}
+                                    href={link.url || undefined}
                                     isActive={link.active}
-                                    onClick={(e) =>  {
+                                    onClick={(e) => {
                                         e.preventDefault();
-                                        handlePagination(link.url)}}
+                                        handlePagination(link.url);
+                                    }}
                                 >
                                     {link.label.replace(/&laquo;|&raquo;/g, '')}
                                 </PaginationLink>
@@ -450,12 +458,14 @@ export default function SavedJobs({ jobs, canRegister = true }: SavedProps) {
 
                     {/* next */}
                     <PaginationNext
-                    href={jobs.links[jobs.links.length -1].url || undefined}
+                        href={
+                            jobs.links[jobs.links.length - 1].url || undefined
+                        }
                         onClick={(e) => {
                             e.preventDefault();
                             handlePagination(
                                 jobs.links[jobs.links.length - 1].url,
-                            )
+                            );
                         }}
                         className={
                             !jobs.links[jobs.links.length - 1].url

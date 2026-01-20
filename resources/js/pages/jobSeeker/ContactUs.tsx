@@ -1,31 +1,46 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { useIsMobile } from "@/hooks/use-mobile"
-import { login, logout, register } from "@/routes"
-import { SharedData } from "@/types"
-import { Link, router, usePage } from "@inertiajs/react"
-import { Bell, Bookmark, BriefcaseBusiness, LogOut } from "lucide-react"
-import { useMobileNavigation } from '@/hooks/use-mobile-navigation'
-import { useState } from "react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+} from '@/components/ui/navigation-menu';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
+import { login, logout, register } from '@/routes';
+import { SharedData } from '@/types';
+import { Link, router, usePage } from '@inertiajs/react';
+import { Bell, Bookmark, BriefcaseBusiness, LogOut } from 'lucide-react';
+import { useState } from 'react';
 
 export default function ContactUs({
     canRegister = true,
 }: {
     canRegister?: boolean;
 }) {
-    const isMobile = useIsMobile()
-    const { url } = usePage()
+    const isMobile = useIsMobile();
+    const { url } = usePage();
 
     const links = [
-        { href: "/", label: "Home" },
-        { href: "/jobSeeker/aboutUs", label: "About Us" },
-        { href: "/jobSeeker/appliedJobs", label: "Applied Jobs" },
-        { href: "/jobSeeker/contactUs", label: "Contact Us" },
-    ]
+        { href: '/', label: 'Home' },
+        { href: '/jobSeeker/aboutUs', label: 'About Us' },
+        { href: '/jobSeeker/appliedJobs', label: 'Applied Jobs' },
+        { href: '/jobSeeker/contactUs', label: 'Contact Us' },
+    ];
     const { auth } = usePage<SharedData>().props;
     const user = auth.user;
     const avatarSrc = user?.avatar_url || user?.avatar || undefined;
@@ -34,7 +49,7 @@ export default function ContactUs({
     const getUserInitials = (name: string) => {
         return name
             .split(' ')
-            .map(word => word[0])
+            .map((word) => word[0])
             .join('')
             .toUpperCase()
             .slice(0, 2);
@@ -46,39 +61,42 @@ export default function ContactUs({
         router.flushAll();
     };
     const [isSheetOpen, setIsSheetOpen] = useState(false);
-    const showSheet = url !== ('/resume');
+    const showSheet = url !== '/resume';
 
     const [hasUnread, setHasUnread] = useState(true);
     return (
         <div>
-            <header className="flex items-center justify-between w-full px-4 md:px-6 py-4">
+            <header className="flex w-full items-center justify-between px-4 py-4 md:px-6">
                 {showSheet && (
                     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                         {/* Logo + Mobile Trigger */}
                         <SheetTrigger asChild className="md:hidden">
-                            <button className="flex items-center font-bold text-2xl focus:outline-none">
+                            <button className="flex items-center text-2xl font-bold focus:outline-none">
                                 <BriefcaseBusiness className="mr-2" />
-                                <h4 className="text-[#309689] text-xl">Job Portal</h4>
+                                <h4 className="text-xl text-[#309689]">
+                                    Job Portal
+                                </h4>
                             </button>
                         </SheetTrigger>
 
                         {/* Desktop Logo */}
-                        <div className="hidden md:flex items-center font-bold text-2xl">
+                        <div className="hidden items-center text-2xl font-bold md:flex">
                             <BriefcaseBusiness className="mr-2" />
                             <h3 className="text-[#309689]">Job Portal</h3>
                         </div>
 
                         {/* Mobile Sheet */}
                         <SheetContent side="right" className="w-64">
-                            <nav className="flex flex-col gap-3 mt-10 ">
+                            <nav className="mt-10 flex flex-col gap-3">
                                 {links.map((link) => (
                                     <Link
                                         key={link.href}
                                         href={link.href}
-                                        className={`px-3 py-2 m-1 rounded-full ${url === link.href
-                                            ? "bg-[#309689] text-white"
-                                            : "hover:bg-gray-100"
-                                            }`}
+                                        className={`m-1 rounded-full px-3 py-2 ${
+                                            url === link.href
+                                                ? 'bg-[#309689] text-white'
+                                                : 'hover:bg-gray-100'
+                                        }`}
                                     >
                                         {link.label}
                                     </Link>
@@ -90,10 +108,11 @@ export default function ContactUs({
                                         cleanup();
                                     }}
                                     href="/resume"
-                                    className={`mx-1 px-3 py-2 rounded-full ${url === "/resume"
-                                        ? "bg-[#309689] text-white"
-                                        : "hover:bg-gray-100"
-                                        }`}
+                                    className={`mx-1 rounded-full px-3 py-2 ${
+                                        url === '/resume'
+                                            ? 'bg-[#309689] text-white'
+                                            : 'hover:bg-gray-100'
+                                    }`}
                                 >
                                     Resume
                                 </a>
@@ -105,55 +124,59 @@ export default function ContactUs({
                 {/* Desktop Navigation */}
                 <div className="hidden md:block">
                     <NavigationMenu viewport={isMobile}>
-
                         <NavigationMenuList className="flex-wrap">
                             {links.map((link) => (
-
                                 <NavigationMenuItem key={link.href}>
                                     <NavigationMenuLink asChild>
                                         <Link
                                             href={link.href}
-                                            className={`px-3 py-1 rounded ${url === link.href
-                                                ? "bg-[#309689] text-white" // active link style
-                                                : "hover:bg-gray-200"
-                                                }`}
+                                            className={`rounded px-3 py-1 ${
+                                                url === link.href
+                                                    ? 'bg-[#309689] text-white' // active link style
+                                                    : 'hover:bg-gray-200'
+                                            }`}
                                         >
                                             {link.label}
                                         </Link>
                                     </NavigationMenuLink>
                                 </NavigationMenuItem>
-
                             ))}
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink>
-                                    <a href="/resume" className={`px-3 py-1 rounded ${window.location.pathname === "/resume"
-                                        ? "bg-[#309689] text-white"
-                                        : "hover:bg-gray-200"
-                                        }`}>Resume</a>
+                                    <a
+                                        href="/resume"
+                                        className={`rounded px-3 py-1 ${
+                                            window.location.pathname ===
+                                            '/resume'
+                                                ? 'bg-[#309689] text-white'
+                                                : 'hover:bg-gray-200'
+                                        }`}
+                                    >
+                                        Resume
+                                    </a>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
-
                         </NavigationMenuList>
-
                     </NavigationMenu>
-
                 </div>
-
 
                 <div className="flex items-center gap-4 align-baseline">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
                                 href="/jobSeeker/savedJobs"
-                                className="p-2 rounded transition">
-                                {url === "/jobSeeker/savedJobs" ? (
-                                    <Bookmark className="h-5 w-5 text-[#309689]" fill="currentColor" />
+                                className="rounded p-2 transition"
+                            >
+                                {url === '/jobSeeker/savedJobs' ? (
+                                    <Bookmark
+                                        className="h-5 w-5 text-[#309689]"
+                                        fill="currentColor"
+                                    />
                                 ) : (
                                     <Bookmark className="h-5 w-5 text-gray-600" />
                                 )}
                             </Link>
-
                         </TooltipTrigger>
                         <TooltipContent>
                             <p>Saved Jobs</p>
@@ -161,19 +184,21 @@ export default function ContactUs({
                     </Tooltip>
 
                     <DropdownMenu>
-
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <DropdownMenuTrigger asChild>
-
-                                    <button className="p-2 rounded transition"
-                                        onClick={() => setHasUnread(false)}>
+                                    <button
+                                        className="rounded p-2 transition"
+                                        onClick={() => setHasUnread(false)}
+                                    >
                                         <Bell
-                                            className={`h-5 w-5 cursor-pointer ${hasUnread ? "text-[#309689]" : "text-gray-600"
-                                                }`}
+                                            className={`h-5 w-5 cursor-pointer ${
+                                                hasUnread
+                                                    ? 'text-[#309689]'
+                                                    : 'text-gray-600'
+                                            }`}
                                         />
                                     </button>
-
                                 </DropdownMenuTrigger>
                             </TooltipTrigger>
 
@@ -182,15 +207,15 @@ export default function ContactUs({
                             </TooltipContent>
                         </Tooltip>
 
-
-                        <DropdownMenuContent className="w-64 mr-3" align="end">
+                        <DropdownMenuContent className="mr-3 w-64" align="end">
                             <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                             <DropdownMenuGroup>
                                 <DropdownMenuItem>
                                     You have 3 new job recommendations
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    Your application for XYZ Company has been viewed
+                                    Your application for XYZ Company has been
+                                    viewed
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                     New message from ABC Recruiter
@@ -200,7 +225,6 @@ export default function ContactUs({
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
-
                     </DropdownMenu>
                     {auth.user ? (
                         <DropdownMenu>
@@ -208,16 +232,28 @@ export default function ContactUs({
                                 <Avatar>
                                     <AvatarImage
                                         className="cursor-pointer"
-                                        src={String(avatarSrc)} alt={user?.name || "User avatar"} />
-                                    <AvatarFallback className="bg-[#309689] text-white"> {user?.name ? getUserInitials(user.name) : 'U'}</AvatarFallback>
+                                        src={String(avatarSrc)}
+                                        alt={user?.name || 'User avatar'}
+                                    />
+                                    <AvatarFallback className="bg-[#309689] text-white">
+                                        {' '}
+                                        {user?.name
+                                            ? getUserInitials(user.name)
+                                            : 'U'}
+                                    </AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56 mr-3" align="start">
-                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuContent
+                                className="mr-3 w-56"
+                                align="start"
+                            >
+                                <DropdownMenuLabel>
+                                    My Account
+                                </DropdownMenuLabel>
                                 <DropdownMenuGroup>
                                     <DropdownMenuItem>
                                         <Link
-                                            className="flex items-center w-full"
+                                            className="flex w-full items-center"
                                             href={logout()}
                                             as="button"
                                             onClick={handleLogout}
@@ -228,10 +264,8 @@ export default function ContactUs({
                                         </Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
-
                             </DropdownMenuContent>
                         </DropdownMenu>
-
                     ) : (
                         <>
                             <Link
@@ -250,14 +284,8 @@ export default function ContactUs({
                             )}
                         </>
                     )}
-
                 </div>
-
-
-
-
-            </header >
-
-        </div >
-    )
+            </header>
+        </div>
+    );
 }

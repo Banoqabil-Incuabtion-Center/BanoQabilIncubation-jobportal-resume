@@ -6,7 +6,6 @@ use App\Models\Resume;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 class ResumeController extends Controller
@@ -94,7 +93,7 @@ class ResumeController extends Controller
 
         $resume = Resume::updateOrCreate(
             ['user_id' => Auth::id()],
-            array_merge($data, ['user_id' => Auth::id()]) 
+            array_merge($data, ['user_id' => Auth::id()])
         );
 
         return response()->json([
@@ -134,7 +133,7 @@ class ResumeController extends Controller
             'skills',
             'languages'
         ];
-        $pdf = PDF::loadView('pdf', compact('resume', 'sectionOrder')); 
+        $pdf = PDF::loadView('pdf', compact('resume', 'sectionOrder'));
 
 
         return $pdf->download('pdf');

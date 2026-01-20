@@ -1,17 +1,37 @@
-import AppLayout from '@/layouts/app-layout';
-import React, { useState } from 'react';
-import { hrefToUrl, Inertia } from '@inertiajs/inertia';
-import { toast } from "sonner";
-import { type BreadcrumbItem } from '@/types';
 import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import { Field } from '@/components/ui/field';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination';
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
+import { Inertia } from '@inertiajs/inertia';
 import { Head, router } from '@inertiajs/react';
+import { Edit2, Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import CreateJobForm from './Create';
 import Edit from './Edit';
-import { Dialog, DialogFooter, DialogHeader, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Field } from '@/components/ui/field';
-import { Edit2, Plus, Trash2 } from 'lucide-react';
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -56,7 +76,7 @@ function ConfirmAlert({ id }: ConfirmAlertProps) {
             onSuccess: () => {
                 toast.success('Job deleted succesfully!');
             },
-            onError: () => toast.error("Failed to delete job"),
+            onError: () => toast.error('Failed to delete job'),
         });
 
         setOpen(false);
@@ -64,9 +84,7 @@ function ConfirmAlert({ id }: ConfirmAlertProps) {
 
     return (
         <>
-            <Button
-                variant="destructive"
-                onClick={() => setOpen(true)}>
+            <Button variant="destructive" onClick={() => setOpen(true)}>
                 <Trash2 />
             </Button>
 
@@ -76,126 +94,129 @@ function ConfirmAlert({ id }: ConfirmAlertProps) {
                         <DialogTitle>Delete Job</DialogTitle>
                     </DialogHeader>
 
-                    <p className="text-sm text-gray-600 mt-1">
-                        Are you sure you want to delete this job? This action cannot be undone.
+                    <p className="mt-1 text-sm text-gray-600">
+                        Are you sure you want to delete this job? This action
+                        cannot be undone.
                     </p>
 
                     <DialogFooter className="mt-4">
-
-
-                        <Button className='hover:bg-red-400' variant="destructive" onClick={handleDelete}>
+                        <Button
+                            className="hover:bg-red-400"
+                            variant="destructive"
+                            onClick={handleDelete}
+                        >
                             Confirm
                         </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-
         </>
     );
 }
-
 
 export default function MyJobs({ jobs }: MyJobsProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedJob, setSelectedJob] = useState<JobData | null>(null);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const handlePagination = (url?: string | null) => {
-         if (!url) return
-                router.visit(url, {
+        if (!url) return;
+        router.visit(url, {
             preserveState: true,
             preserveScroll: true,
-          })
-    }
+        });
+    };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="My Jobs" />
 
-            <div className="flex justify-between items-center m-3 ">
-                <h1 className='text-black font-bold text-3xl'>My Jobs</h1>
+            <div className="m-3 flex items-center justify-between">
+                <h1 className="text-3xl font-bold text-black">My Jobs</h1>
 
                 {/* Create Job Modal */}
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
-
-                        <Button className='bg-[#309689] hover:bg-gray-300 hover:text-black'><Plus className='mr-0'/> Create Job</Button>
+                        <Button className="bg-[#309689] hover:bg-gray-300 hover:text-black">
+                            <Plus className="mr-0" /> Create Job
+                        </Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>
-                                Create Job
-                            </DialogTitle>
+                            <DialogTitle>Create Job</DialogTitle>
                         </DialogHeader>
 
-                        <CreateJobForm onSuccess={() => setIsDialogOpen(false)} />
-
-
+                        <CreateJobForm
+                            onSuccess={() => setIsDialogOpen(false)}
+                        />
                     </DialogContent>
-
                 </Dialog>
             </div>
 
             {/* Edit Job Modal */}
-            <div className="flex justify-between items-center m-3 ">
-                <Dialog open={isEditOpen} onOpenChange={() => setIsEditOpen(false)}>
+            <div className="m-3 flex items-center justify-between">
+                <Dialog
+                    open={isEditOpen}
+                    onOpenChange={() => setIsEditOpen(false)}
+                >
                     <DialogTrigger asChild>
-
-
                         {/* <Button variant="secondary"><Edit2 className="" /></Button> */}
-
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>
-                                Edit
-                            </DialogTitle>
+                            <DialogTitle>Edit</DialogTitle>
                         </DialogHeader>
 
                         {selectedJob && (
-                            <Edit job={selectedJob} onSuccess={() => setIsEditOpen(false)} />
+                            <Edit
+                                job={selectedJob}
+                                onSuccess={() => setIsEditOpen(false)}
+                            />
                         )}
-
-
                     </DialogContent>
-
                 </Dialog>
             </div>
 
             {/* Job Cards Section */}
-            <div className="p-3 grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+            <div className="grid gap-4 p-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
                 {jobs.data.length === 0 ? (
                     <p className="text-gray-500">No jobs found.</p>
                 ) : (
                     jobs.data.map((job) => (
-                        <Card key={job.id} className="hover:shadow-md transition">
+                        <Card
+                            key={job.id}
+                            className="transition hover:shadow-md"
+                        >
                             <CardHeader>
-                                <div className='flex justify-between'>
+                                <div className="flex justify-between">
                                     <div>
-                                        <CardTitle >{job.company?.name ?? "No Company"}</CardTitle>
-                                        <CardTitle className="text-[#309689] text-lg">{job.title}</CardTitle>
-                                        <CardDescription>Salary: {job.salary}</CardDescription>
+                                        <CardTitle>
+                                            {job.company?.name ?? 'No Company'}
+                                        </CardTitle>
+                                        <CardTitle className="text-lg text-[#309689]">
+                                            {job.title}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            Salary: {job.salary}
+                                        </CardDescription>
                                     </div>
                                     <div>
                                         <Field orientation="horizontal">
-
                                             <Button
                                                 variant="secondary"
                                                 onClick={() => {
                                                     setSelectedJob({
                                                         ...job,
-                                                        salary: job.salary.toString()
+                                                        salary: job.salary.toString(),
                                                     });
                                                     setIsEditOpen(true);
                                                 }}
-                                            ><Edit2 /></Button>
-
+                                            >
+                                                <Edit2 />
+                                            </Button>
 
                                             <ConfirmAlert id={job.id} />
-
                                         </Field>
                                     </div>
                                 </div>
-
-
                             </CardHeader>
                         </Card>
                     ))
@@ -203,52 +224,62 @@ export default function MyJobs({ jobs }: MyJobsProps) {
             </div>
 
             {/* PAGINATION */}
-            <Pagination className='mt-6 mb-6'>
+            <Pagination className="mt-6 mb-6">
                 <PaginationContent>
                     {/* previous */}
                     <PaginationPrevious
-                    href={jobs.links[0].url || undefined}
+                        href={jobs.links[0].url || undefined}
                         onClick={(e) => {
                             e.preventDefault();
-                            handlePagination(jobs.links[0].url)}}
-                        className={!jobs.links[0].url ? "opacity-50 pointer-events-none" : ""}
+                            handlePagination(jobs.links[0].url);
+                        }}
+                        className={
+                            !jobs.links[0].url
+                                ? 'pointer-events-none opacity-50'
+                                : ''
+                        }
                     />
 
                     {/* page numbers */}
                     {jobs.links.slice(1, -1).map((link, index) => {
                         if (link.label === '…') {
-                            return (
-                                <PaginationEllipsis key={index} />
-                            )
+                            return <PaginationEllipsis key={index} />;
                         }
 
                         return (
                             <PaginationItem key={index}>
                                 <PaginationLink
-                                href={link.url || undefined}
+                                    href={link.url || undefined}
                                     isActive={link.active}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        handlePagination(link.url)}}
+                                        handlePagination(link.url);
+                                    }}
                                 >
                                     {link.label.replace(/&laquo;|&raquo;/g, '')}
                                 </PaginationLink>
                             </PaginationItem>
-                        )
-                    }
-
-                    )}
+                        );
+                    })}
 
                     {/* next */}
                     <PaginationNext
-                    href={jobs.links[jobs.links.length - 1].url || undefined}
-                        onClick={() => handlePagination(jobs.links[jobs.links.length - 1].url)}
-                        className={!jobs.links[jobs.links.length - 1].url ? "opacity-50 pointer-events-none" : ""} />
+                        href={
+                            jobs.links[jobs.links.length - 1].url || undefined
+                        }
+                        onClick={() =>
+                            handlePagination(
+                                jobs.links[jobs.links.length - 1].url,
+                            )
+                        }
+                        className={
+                            !jobs.links[jobs.links.length - 1].url
+                                ? 'pointer-events-none opacity-50'
+                                : ''
+                        }
+                    />
                 </PaginationContent>
             </Pagination>
-
-
-
-        </AppLayout >
+        </AppLayout>
     );
 }

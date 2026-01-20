@@ -11,10 +11,11 @@ class SeekerController extends Controller
 {
     //
 
-    public function saveJob(Job $job){
+    public function saveJob(Job $job)
+    {
         $user = Auth::user();
 
-        if ($user->savedJobs()->where('job_id',$job->id)->exists()){
+        if ($user->savedJobs()->where('job_id', $job->id)->exists()) {
             $user->savedJobs()->detach($job->id);
             // return response()->json(['status' => 'removed']);
             return back();
@@ -25,7 +26,8 @@ class SeekerController extends Controller
         return back();
     }
 
-    public function savedJob(){
+    public function savedJob()
+    {
         $jobs = Auth::user()->savedJobs()->with('company')->latest()->paginate(5);
 
         return Inertia::render('jobSeeker/SavedJobs', [
@@ -33,11 +35,10 @@ class SeekerController extends Controller
         ]);
     }
 
-    public function getSavedJobIds() {
-    $user = Auth::user();
-    $savedJobIds = $user->savedJobs()->pluck('job_id'); // get only IDs
-    return response()->json($savedJobIds);
-    
-}
-
+    public function getSavedJobIds()
+    {
+        $user = Auth::user();
+        $savedJobIds = $user->savedJobs()->pluck('job_id'); // get only IDs
+        return response()->json($savedJobIds);
+    }
 }

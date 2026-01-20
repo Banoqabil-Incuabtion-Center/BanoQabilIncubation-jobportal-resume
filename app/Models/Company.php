@@ -14,11 +14,13 @@ class Company extends Model
 
     protected $guarded = [];
 
-    public function users(){
+    public function users()
+    {
         return $this->hasMany(User::class);
     }
 
-    public function job(){
+    public function job()
+    {
         return $this->hasMany(Job::class);
     }
 }
