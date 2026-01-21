@@ -19,8 +19,8 @@ export default function ForEmployers() {
     ];
     return (
         <div>
-            <header className="flex w-full items-center justify-between px-6 py-4">
-                <div className="flex flex-wrap items-center text-2xl font-bold">
+            <header className="flex w-full items-center justify-between px-3 py-4">
+                <div className="flex flex-wrap items-center text-xl md:text-2xl font-bold">
                     <BriefcaseBusiness className="mr-2" />
                     <h3 className="text-[#309689]"> Job Portal</h3>
                 </div>

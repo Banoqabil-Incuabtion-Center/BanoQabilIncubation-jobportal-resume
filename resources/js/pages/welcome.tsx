@@ -138,7 +138,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
 
     return (
         <div>
-            <header className="flex w-full items-center justify-between px-4 py-4 md:px-6">
+            <header className="flex w-full items-center justify-between px-3 py-3 md:px-6">
                 {showSheet && (
                     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                         {/* Logo + Mobile Trigger */}
@@ -236,70 +236,80 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 md:gap-4">
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Link
-                                href="/jobSeeker/savedJobs"
-                                className="rounded p-2 transition"
-                            >
-                                {url === '/jobSeeker/savedJobs' ? (
-                                    <Bookmark
-                                        className="h-5 w-5 text-[#309689]"
-                                        fill="currentColor"
-                                    />
-                                ) : (
-                                    <Bookmark className="h-5 w-5 text-gray-600" />
-                                )}
-                            </Link>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p>Saved Jobs</p>
-                        </TooltipContent>
-                    </Tooltip>
-
-                    <DropdownMenu>
+                    <div className="hidden md:block">
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <DropdownMenuTrigger asChild>
-                                    <button
-                                        className="rounded p-2 transition"
-                                        onClick={() => setHasUnread(false)}
-                                    >
-                                        <Bell
-                                            className={`h-5 w-5 cursor-pointer ${
-                                                hasUnread
-                                                    ? 'text-[#309689]'
-                                                    : 'text-gray-600'
-                                            }`}
+                                <Link
+                                    href="/jobSeeker/savedJobs"
+                                    className="rounded p-2 transition"
+                                >
+                                    {url === '/jobSeeker/savedJobs' ? (
+                                        <Bookmark
+                                            className="h-5 w-5 text-[#309689]"
+                                            fill="currentColor"
                                         />
-                                    </button>
-                                </DropdownMenuTrigger>
+                                    ) : (
+                                        <Bookmark className="h-5 w-5 text-gray-600" />
+                                    )}
+                                </Link>
                             </TooltipTrigger>
-
                             <TooltipContent>
-                                <p>Notifications</p>
+                                <p>Saved Jobs</p>
                             </TooltipContent>
                         </Tooltip>
+                    </div>
 
-                        <DropdownMenuContent className="mr-3 w-64" align="end">
-                            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-                            <DropdownMenuGroup>
-                                <DropdownMenuItem>
-                                    You have 3 new job recommendations
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    Your application for XYZ Company has been
-                                    viewed
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    New message from ABC Recruiter
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    New notification
-                                </DropdownMenuItem>
-                            </DropdownMenuGroup>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="hidden md:block">
+                        <DropdownMenu>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <DropdownMenuTrigger asChild>
+                                        <button
+                                            className="rounded p-2 transition"
+                                            onClick={() => setHasUnread(false)}
+                                        >
+                                            <Bell
+                                                className={`h-5 w-5 cursor-pointer ${
+                                                    hasUnread
+                                                        ? 'text-[#309689]'
+                                                        : 'text-gray-600'
+                                                }`}
+                                            />
+                                        </button>
+                                    </DropdownMenuTrigger>
+                                </TooltipTrigger>
+
+                                <TooltipContent>
+                                    <p>Notifications</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                            <DropdownMenuContent
+                                className="mr-3 w-64"
+                                align="end"
+                            >
+                                <DropdownMenuLabel>
+                                    Notifications
+                                </DropdownMenuLabel>
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem>
+                                        You have 3 new job recommendations
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        Your application for XYZ Company has
+                                        been viewed
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        New message from ABC Recruiter
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        New notification
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+
                     {auth.user ? (
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -351,26 +361,56 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                         </DropdownMenu>
                     ) : (
                         <>
-                            <Link
-                                href={login()}
-                                className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                            >
-                                Log in
-                            </Link>
-                            {canRegister && (
+                            <div className="block md:hidden">
                                 <Link
-                                    href={register()}
-                                    className="inline-block rounded-sm border border-[#19140035] bg-[#309689] px-5 py-1.5 text-sm leading-normal text-[#fff] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                    href={login()}
+                                    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
                                 >
-                                    Register
+                                    Log in
                                 </Link>
-                            )}
-                            <Link
-                                href={'/jobSeeker/forEmployers'}
-                                className="inline-block border-[#19140035] text-sm hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                            >
-                                For Employers/Post a Job
-                            </Link>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <button className="rounded-sm border border-[#309689] bg-[#309689] px-4 py-1.5 text-sm text-white">
+                                            Register
+                                        </button>
+                                    </DropdownMenuTrigger>
+
+                                    <DropdownMenuContent
+                                        align="end"
+                                        className="w-48"
+                                    >
+                                        <DropdownMenuItem asChild>
+                                            <Link href={register()}>
+                                                Job Seeker
+                                            </Link>
+                                        </DropdownMenuItem>
+
+                                        <DropdownMenuItem asChild>
+                                            <Link href={'/jobSeeker/forEmployers'}>
+                                                For Employers
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
+
+                            <div className="mt-0 hidden p-0 md:block">
+                                
+                                {canRegister && (
+                                    <Link
+                                        href={register()}
+                                        className="mx-2 inline-block rounded-sm border border-[#19140035] bg-[#309689] px-3 py-1 text-sm leading-normal text-[#fff] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                    >
+                                        Register
+                                    </Link>
+                                )}
+                                <Link
+                                    href={'/jobSeeker/forEmployers'}
+                                    className="inline-block border-[#19140035] text-sm hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                >
+                                    For Employers/Post a Job
+                                </Link>
+                            </div>
                         </>
                     )}
                 </div>
@@ -437,7 +477,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                             <div className="flex items-center justify-center gap-2">
                                 <button
                                     // href="/jobSeeker/savedJobs"
-                                    className="rounded p-0 transition cursor-pointer"
+                                    className="cursor-pointer rounded p-0 transition"
                                     onClick={() => {
                                         if (!auth.user)
                                             return router.visit(login());
