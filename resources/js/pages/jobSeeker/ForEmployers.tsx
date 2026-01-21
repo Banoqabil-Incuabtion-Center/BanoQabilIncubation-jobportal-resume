@@ -19,8 +19,8 @@ export default function ForEmployers() {
     ];
     return (
         <div>
-            <header className="flex w-full items-center justify-between px-3 py-4">
-                <div className="flex flex-wrap items-center text-xl md:text-2xl font-bold">
+            <header className="flex w-full items-center justify-between px-4 py-4">
+                <div className="flex flex-wrap items-center text-xl font-bold md:text-2xl">
                     <BriefcaseBusiness className="mr-2" />
                     <h3 className="text-[#309689]"> Job Portal</h3>
                 </div>
@@ -48,16 +48,16 @@ export default function ForEmployers() {
                     </NavigationMenu>
                 </div>
             </header>
-            <div className="mx-5 mt-10 flex flex-col items-center justify-between gap-6 md:mx-20 md:flex-row">
+            <div className="mx-4 mt-8 flex flex-col items-center justify-between gap-6 md:mx-20 md:flex-row">
                 <div>
-                    <h1 className="mx-20 mt-20 flex items-center text-4xl font-bold">
+                    <h1 className="mx-10 flex items-center text-4xl font-bold">
                         Looking to Expand Your Team?
                     </h1>
-                    <p className="mx-20 text-lg text-gray-700">
+                    <p className="mx-10 text-lg text-gray-700">
                         Post your job and connect with skilled professionals
                         now.
                     </p>
-                    <div className="mx-20 mt-10">
+                    <div className="mx-10 mt-5">
                         <Link
                             href={'/register/recruiter'}
                             className="rounded bg-[#309689] px-4 py-2 text-white transition-colors hover:bg-teal-600"
@@ -68,7 +68,7 @@ export default function ForEmployers() {
                 </div>
 
                 <img
-                    className="m-20 w-full max-w-md md:max-w-lg lg:max-w-xl"
+                    className="m-10 w-full max-w-md md:max-w-lg lg:max-w-xl"
                     src="/LTS-hero-hire-social-share.jpg"
                     alt="img"
                 />
