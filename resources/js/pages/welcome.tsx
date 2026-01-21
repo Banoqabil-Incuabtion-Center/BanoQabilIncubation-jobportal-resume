@@ -438,7 +438,7 @@ export default function Index({ jobs, canRegister = true }: IndexProps) {
                                 <button
                                     // href="/jobSeeker/savedJobs"
                                     className="rounded p-0 transition cursor-pointer"
-                                    onClick={(e) => {
+                                    onClick={() => {
                                         if (!auth.user)
                                             return router.visit(login());
 
